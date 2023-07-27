@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en"  xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1">
+    <meta name="description" content="The login page allows a user to gain access to an application by entering their username and password or by authenticating using a social media login.">
+    <title>Đăng nhập</title>
+
+    <!-- STYLESHEETS -->
+    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~--- -->
+
+    <!-- Fonts [ OPTIONAL ] -->
+    <link rel="preconnect" th:href=@{https://fonts.googleapis.com}>
+    <link rel="preconnect" th:href=@{https://fonts.gstatic.com} crossorigin>
+    <link th:href=@{https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;700&family=Ubuntu:wght@400;500;700&display=swap} rel="stylesheet">
+
+    <!-- Bootstrap CSS [ REQUIRED ] -->
+    <link rel="stylesheet" th:href=@{/static//css/bootstrap.min.css}>
+
+    <!-- Nifty CSS [ REQUIRED ] -->
+    <link rel="stylesheet" th:href=@{/static//css/nifty.min.css}>
+
+    <!-- Nifty Demo Icons [ OPTIONAL ] -->
+    <link rel="stylesheet" th:href=@{/static/css/demo-purpose/demo-icons.min.css}>
+
+    <!-- Demo purpose CSS [ DEMO ] -->
+    <link rel="stylesheet" th:href=@{/static/css/demo-purpose/demo-settings.min.css}>
+
+    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~---
+
+    [ REQUIRED ]
+    You must include this category in your project.
+
+
+    [ OPTIONAL ]
+    This is an optional plugin. You may choose to include it in your project.
+
+
+    [ DEMO ]
+    Used for demonstration purposes only. This category should NOT be included in your project.
+
+
+    [ SAMPLE ]
+    Here's a sample script that explains how to initialize plugins and/or components: This category should NOT be included in your project.
+
+
+    Detailed information and more samples can be found in the documentation.
+
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~--- -->
+</head>
+
+<body class="card-body">
+
+    <!-- PAGE CONTAINER -->
+    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+    <div id="root" class="root front-container">
+
+        <!-- CONTENTS -->
+        <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+        <section id="content" class="content">
+            <div class="content__boxed w-100 min-vh-100 d-flex flex-column align-items-center justify-content-center">
+                <div class="content__wrap">
+
+                    <!-- Login card -->
+                    <div class="card shadow-lg">
+                        <div class="card-body">
+
+                            <div th:if="${param.error}">
+                                <div class="alert alert-danger">Mật khẩu hoặc email không hợp lệ</div>
+                            </div>
+                            <div th:if="${param.logout}">
+                                <div class="alert alert-success"> Đăng xuất thành công.</div>
+                            </div>
+
+                            <div class="text-center">
+                                <h1 class="h3">Đăng nhập</h1>
+                                <p>Đăng nhập ngay để kết nối với Timtro247</p>
+                            </div>
+
+                            <form class="w-md-400px d-inline-flex row mb-2" method="post" role="form" th:action="@{/login}">
+                                <div class="form-group mb-3">
+                                    <label class="control-label"> Email</label>
+                                    <input
+                                        type="text"
+                                        id="username"
+                                        name="username"
+                                        class="form-control"
+                                        placeholder= "Nhập địa chỉ email"
+                                    />
+                                </div>
+        
+                                <div class="form-group mb-3">
+                                    <label class="control-label"> Mật khẩu</label>
+                                    <input
+                                            type="password"
+                                            id="password"
+                                            name="password"
+                                            class="form-control"
+                                            placeholder="Nhập mật khẩu"
+                                    />
+                                </div>
+
+                                <div class="d-grid mt-4">
+                                    <button class="btn btn-primary btn-lg" type="submit">Sign In</button>
+                                </div>
+                            </form>
+
+                            <div class="d-flex justify-content-between mt-4">
+                                <a th:href=@{/forgot-password} class="btn-link text-decoration-none">Quên mật khẩu?</a>
+                                <a th:href=@{/register} class="btn-link text-decoration-none">Tạo tài khoản</a>
+                            </div>
+
+                            <div class="d-flex align-items-center justify-content-between border-top pt-3 mt-3">
+                                <h5 class="m-0">Đăng nhập với</h5>
+
+                                <!-- Social media buttons -->
+                                <div class="ms-3">
+                                    <a href="#" class="btn btn-sm btn-icon btn-hover btn-primary text-inherit">
+                                        <i class="demo-psi-facebook fs-5"></i>
+                                    </a>
+                                    <a href="#" class="btn btn-sm btn-icon btn-hover btn-info text-inherit">
+                                        <i class="demo-psi-twitter fs-5"></i>
+                                    </a>
+                                    <a href="#" class="btn btn-sm btn-icon btn-hover btn-danger text-inherit">
+                                        <i class="demo-psi-google-plus fs-5"></i>
+                                    </a>
+                                    <a href="#" class="btn btn-sm btn-icon btn-hover btn-warning text-inherit">
+                                        <i class="demo-psi-instagram fs-5"></i>
+                                    </a>
+                                </div>
+                                <!-- END : Social media buttons -->
+
+                            </div>
+
+                        </div>
+                    </div>
+                    <!-- END : Login card -->
+
+                    <!-- Show the background images container -->
+                    <!-- <div class="d-flex align-items-center justify-content-center gap-3 mt-4">
+                        <button class="btn btn-danger hstack gap-2" data-bs-toggle="offcanvas" data-bs-target="#_dm-boxedBgContent">
+                            <i class=" demo-psi-photos fs-4"></i>
+                            <span class="vr"></span>
+                            Background image
+                        </button>
+                        <button class="btn btn-light" onclick="window.history.back()">Back</button>
+                    </div> -->
+                    <!-- END : Show the background images container -->
+
+                </div>
+            </div>
+        </section>
+    </div>
+    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+    <!-- END - PAGE CONTAINER -->
+
+    <!-- BOXED LAYOUT : BACKGROUND IMAGES CONTENT [ DEMO ] -->
+    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+    <div id="_dm-boxedBgContent" class="_dm-boxbg offcanvas offcanvas-bottom" data-bs-backdrop="false" data-bs-scroll="true" tabindex="-1">
+        <div class="offcanvas-body p-4">
+
+            <!-- Content Header -->
+            <div class="offcanvas-header border-bottom p-0 pb-3">
+                <div>
+                    <h4 class="offcanvas-title">Background Images</h4>
+                    <span class="text-muted">Add an image to replace the solid background color</span>
+                </div>
+                <button type="button" class="btn-close btn-lg text-reset shadow-none" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+            </div>
+            <!-- End - Content header -->
+
+
+    <!-- Popper JS [ OPTIONAL ] -->
+    <script src="../static/vendors/popperjs/popper.min.js" defer></script>
+
+    <!-- Bootstrap JS [ OPTIONAL ] -->
+    <script src="../static/vendors/bootstrap/bootstrap.min.js" defer></script>
+
+    <!-- Nifty JS [ OPTIONAL ] -->
+    <script src="../static/js/nifty.js" defer></script>
+
+    <!-- Nifty Settings [ DEMO ] -->
+    <script src="../static/js/demo-purpose-only.js" defer></script>
+
+</body>
+
+</html>

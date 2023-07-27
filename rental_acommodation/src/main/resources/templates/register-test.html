@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+>
+<head>
+    <meta charset="UTF-8">
+    <title>Registration and Login System</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" th:href="@{/index}">Đăng ký</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" th:href="@{/register}">Đăng nhập</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top" th:fragment="header">
+    <div class="container-fluid">
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+    </div>
+</nav>
+<br />
+<div class="container">
+    <div class="row col-md-8 offset-md-2">
+        <div class="card">
+            <div th:if="${param.success}">
+                <div class="alert alert-info">Đăng ký tài khoản thành công!</div>
+            </div>
+
+            <div th:if="${param.fail}">
+                <div class="alert alert-info">Mật khẩu không khớp nhau</div>
+            </div>
+
+            <div class="card-header">
+                <h2 class="text-center">Đăng ký tài khoản</h2>
+            </div>
+            <div class="card-body">
+
+                <form method="post" role="form" th:action="@{/register/save}" th:object="${registration}">
+                    <div class="col-sm-6">
+                        <label class="form-label">Tên đăng nhập</label>
+                        <input class="form-control"
+                               id="name"
+                               name="name"
+                               placeholder="Nhập tên đăng nhập"
+                               th:field="*{name}"
+                               type="text"
+                        />
+                        <p th:errors="*{name}" class="text-danger"
+                           th:if="${#fields.hasErrors('name')}">
+                        </p>
+                    </div>
+
+                    <div class="form-group mb-3">
+                        <label class="form-label">Số điện thoại</label>
+                        <input class="form-control"
+                               id="phone"
+                               name="phone"
+                               placeholder="Nhập số điện thoại"
+                               th:field="*{phone}"
+                               type="text"/>
+                        <p th:errors="*{phone}" class="text-danger"
+                           th:if="${#fields.hasErrors('phone')}">
+                        </p>
+                    </div>
+
+                    <div class="form-group mb-3">
+                        <label class="form-label">Loại tài khoản</label>
+                        <select 
+                                class="form-control" 
+                                id="role" 
+                                name="role" 
+                                th:field="*{role}">
+                            <option value="TENANT">Người tìm trọ</option>
+                            <option value="LANDLORD">Người cho thuê</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group mb-3">
+                        <label class="form-label">Email</label>
+                        <input class="form-control"
+                               id="email"
+                               name="email"
+                               placeholder="Nhập email"
+                               th:field="*{email}"
+                               type="email"
+                        />
+                        <p th:errors="*{email}" class="text-danger"
+                           th:if="${#fields.hasErrors('email')}">
+                        </p>
+                    </div>
+
+                    <div class="form-group mb-3">
+                        <label class="form-label">Mật khẩu</label>
+                        <input class="form-control"
+                               id="password"
+                               name="password"
+                               placeholder="Nhập mật khẩu"
+                               th:field="*{password}"
+                               type="password"
+                        />
+                        <p th:errors="*{password}" class="text-danger"
+                           th:if="${#fields.hasErrors('password')}">
+                        </p>
+                    </div>
+
+                    <div class="form-group mb-3">
+                        <label class="form-label">Nhập lại mật khẩu</label>
+                        <input class="form-control"
+                               id="confirmPassword"
+                               name="confirmPassword"
+                               placeholder="Nhập lại mật khẩu"
+                               th:field="*{confirmPassword}"
+                               type="password"
+                        />
+                        <p th:errors="*{confirmPassword}" class="text-danger"
+                           th:if="${#fields.hasErrors('confirmPassword')}">
+                        </p>
+                    </div>
+
+                    <div class="form-group mb-3">
+                        <button class="btn btn-primary" type="submit">Đăng ký</button>
+                        <span>Đã có tài khoản? <a href="/" th:href="@{/login}">Đăng nhập</a></span>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
