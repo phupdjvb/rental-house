@@ -28,7 +28,7 @@ public class Landlord {
     @Column(name = "name")
     private String name;
 
-    @Column(nullable = false, name = "email", unique = true)
+    @Column(nullable = false, name = "email")
     private String landlordEmail;
 
     @Column(name = "phone", length = 20)

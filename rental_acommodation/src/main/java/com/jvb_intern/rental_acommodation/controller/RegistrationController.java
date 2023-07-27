@@ -51,12 +51,18 @@ public class RegistrationController {
         String password = registrationDto.getPassword();
         String confirmPassword = registrationDto.getConfirmPassword();
 
+        
         // Tenant existingTenant = tenantService.findByTenantEmail(email);
         // String tenantEmail = existingTenant.getTenantEmail();
-        // Landlord existingLandlord = landlordService.findByTenantEmail(email);
+        // Landlord existingLandlord = landlordService.findByLandlordEmail(email);
         // String landlordEmail = existingLandlord.getLandlordEmail();
 
-        // if(existingTenant != null && existingLandlord != null && tenantEmail.equals(landlordEmail)) {
+        // if(existingTenant != null && existingTenant.getTenantEmail().equals(email)) {
+        //     result.rejectValue("email", null, 
+        //                     "Tài khoản đã tồn tại trên hệ thống!");
+        // }
+
+        // if(existingLandlord != null && existingLandlord.getLandlordEmail().equals(email)) {
         //     result.rejectValue("email", null, 
         //                     "Tài khoản đã tồn tại trên hệ thống!");
         // }

@@ -26,25 +26,28 @@ public class CustomerUserDetailService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+        Tenant tenant = tenantRepository.findByTenantEmail(email);
+        Landlord landlord = landlordRepository.findByLandlordEmail(email);
+
         if (email.equals("admin@gmail.com")) {
             String password = "123456";
             List<GrantedAuthority> authorities = Collections.singletonList(new SimpleGrantedAuthority("ADMIN"));
             return new org.springframework.security.core.userdetails.User(email, password, authorities);
+        }
+        
+        if(tenant == null && landlord == null) {
+            throw new UsernameNotFoundException("Không tìm thấy tài khoản trong hệ thống");
         } else {
-            Tenant tenant = tenantRepository.findByTenantEmail(email);
-            // find email in 2 tables Tenant and Landlord
-            if(tenant != null) {
+            if(tenant != null && landlord == null) {
                 List<GrantedAuthority> authorities = Collections.singletonList(new SimpleGrantedAuthority("TENANT"));
                 return new org.springframework.security.core.userdetails.User(tenant.getTenantEmail(), tenant.getPassword(), authorities);
+            } else if(tenant == null && landlord != null) {
+                List<GrantedAuthority> authorities = Collections.singletonList(new SimpleGrantedAuthority("LANDLORD"));
+                return new org.springframework.security.core.userdetails.User(landlord.getLandlordEmail(), landlord.getPassword(), authorities);
             } else {
-                Landlord landlord = landlordRepository.findByLandlordEmail(email);
-                if(landlord != null) {
-                    List<GrantedAuthority> authorities = Collections.singletonList(new SimpleGrantedAuthority("LANDLORD"));
-                    return new org.springframework.security.core.userdetails.User(landlord.getLandlordEmail(), landlord.getLandlordEmail(), authorities);
-                } else {
-                    throw new UsernameNotFoundException("Không tìm thấy tài khoản trong hệ thống");
-                }
+                throw new UsernameNotFoundException("Tài khoản không hợp lệ");
             }
         }
+
     }
 }
