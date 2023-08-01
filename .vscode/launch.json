@@ -1,0 +1,15 @@
+{
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Spring Boot-RentalAcommodationApplication<rental_acommodation>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "com.jvb_intern.rental_acommodation.RentalAcommodationApplication",
+            "projectName": "rental_acommodation",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env"
+        }
+    ]
+}
+

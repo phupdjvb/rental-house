@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import com.jvb_intern.rental_acommodation.common.Constant;
 import com.jvb_intern.rental_acommodation.dto.LandlordDto;
 import com.jvb_intern.rental_acommodation.dto.RegistrationDto;
 import com.jvb_intern.rental_acommodation.dto.TenantDto;
@@ -51,23 +52,8 @@ public class RegistrationController {
         String password = registrationDto.getPassword();
         String confirmPassword = registrationDto.getConfirmPassword();
 
-        
-        // Tenant existingTenant = tenantService.findByTenantEmail(email);
-        // String tenantEmail = existingTenant.getTenantEmail();
-        // Landlord existingLandlord = landlordService.findByLandlordEmail(email);
-        // String landlordEmail = existingLandlord.getLandlordEmail();
-
-        // if(existingTenant != null && existingTenant.getTenantEmail().equals(email)) {
-        //     result.rejectValue("email", null, 
-        //                     "Tài khoản đã tồn tại trên hệ thống!");
-        // }
-
-        // if(existingLandlord != null && existingLandlord.getLandlordEmail().equals(email)) {
-        //     result.rejectValue("email", null, 
-        //                     "Tài khoản đã tồn tại trên hệ thống!");
-        // }
-
-        if(role.equals("TENANT")) {
+        // Note: một email không thể tồn tại trên cả 2 bảng
+        if(role.equals(Constant.ROLE_TENANT)) {
             Tenant existingTenant = tenantService.findByTenantEmail(email);
             if(existingTenant != null && existingTenant.getTenantEmail() != null && !existingTenant.getTenantEmail().isEmpty()) {
                 result.rejectValue("email", null, 
@@ -85,7 +71,7 @@ public class RegistrationController {
                 tenantDto.setName(registrationDto.getName());
                 tenantDto.setEmail(registrationDto.getEmail());
                 tenantDto.setPhone(registrationDto.getPhone());
-                tenantDto.setRole("TENANT");
+                tenantDto.setRole(Constant.ROLE_TENANT);
                 tenantDto.setPassword(registrationDto.getPassword());
                 
                 tenantService.saveTenant(tenantDto);
@@ -108,7 +94,7 @@ public class RegistrationController {
                 landlordDto.setName(registrationDto.getName());
                 landlordDto.setEmail(registrationDto.getEmail());
                 landlordDto.setPhone(registrationDto.getPhone());
-                landlordDto.setRole("LANDLORD");
+                landlordDto.setRole(Constant.ROLE_LANDLORD);
                 landlordDto.setPassword(registrationDto.getPassword());
                 
                 landlordService.saveLandlord(landlordDto);
@@ -116,5 +102,4 @@ public class RegistrationController {
         }
         return "redirect:/register?success";
     }
-
 }

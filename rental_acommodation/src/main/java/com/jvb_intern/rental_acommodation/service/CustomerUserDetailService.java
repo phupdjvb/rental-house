@@ -1,16 +1,16 @@
 package com.jvb_intern.rental_acommodation.service;
 
 import java.util.Collections;
-import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.jvb_intern.rental_acommodation.common.Constant;
 import com.jvb_intern.rental_acommodation.entity.Landlord;
 import com.jvb_intern.rental_acommodation.entity.Tenant;
 import com.jvb_intern.rental_acommodation.repository.LandlordRepository;
@@ -26,28 +26,38 @@ public class CustomerUserDetailService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        Tenant tenant = tenantRepository.findByTenantEmail(email);
-        Landlord landlord = landlordRepository.findByLandlordEmail(email);
-
-        if (email.equals("admin@gmail.com")) {
-            String password = "123456";
-            List<GrantedAuthority> authorities = Collections.singletonList(new SimpleGrantedAuthority("ADMIN"));
-            return new org.springframework.security.core.userdetails.User(email, password, authorities);
-        }
-        
-        if(tenant == null && landlord == null) {
-            throw new UsernameNotFoundException("Không tìm thấy tài khoản trong hệ thống");
-        } else {
-            if(tenant != null && landlord == null) {
-                List<GrantedAuthority> authorities = Collections.singletonList(new SimpleGrantedAuthority("TENANT"));
-                return new org.springframework.security.core.userdetails.User(tenant.getTenantEmail(), tenant.getPassword(), authorities);
-            } else if(tenant == null && landlord != null) {
-                List<GrantedAuthority> authorities = Collections.singletonList(new SimpleGrantedAuthority("LANDLORD"));
-                return new org.springframework.security.core.userdetails.User(landlord.getLandlordEmail(), landlord.getPassword(), authorities);
-            } else {
-                throw new UsernameNotFoundException("Tài khoản không hợp lệ");
+        try {
+            Tenant tenant = tenantRepository.findByTenantEmail(email);
+            if (tenant != null) {
+                return new org.springframework.security.core.userdetails.User(
+                    tenant.getTenantEmail(),
+                    tenant.getPassword(),
+                    Collections.singletonList(new SimpleGrantedAuthority(Constant.ROLE_TENANT))
+                );
             }
-        }
 
+            Landlord landlord = landlordRepository.findByLandlordEmail(email);
+            if (landlord != null) {
+                return new org.springframework.security.core.userdetails.User(
+                    landlord.getLandlordEmail(),
+                    landlord.getPassword(),
+                    Collections.singletonList(new SimpleGrantedAuthority(Constant.ROLE_LANDLORD))
+                );
+            }
+
+            if ("admin@gmail.com".equals(email)) {
+                BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+                String encodePassword = passwordEncoder.encode("123456");
+                return new org.springframework.security.core.userdetails.User(
+                    email,
+                    encodePassword,
+                    Collections.singletonList(new SimpleGrantedAuthority(Constant.ROLE_ADMIN))
+                );
+            }
+
+            throw new UsernameNotFoundException("Tài khoản không tồn tại trong hệ thống!");
+        } catch (Exception e) {
+            throw new UsernameNotFoundException("Đã xảy ra lỗi trong quá trình xác thực người dùng!");
+        }
     }
 }
