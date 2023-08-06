@@ -99,7 +99,7 @@ public class ForgotPasswordController {
             return "reset-password-form";
         }
 
-        model.addAttribute("message", "Tài khoản không tồn tại, không thể xác thực");
+        model.addAttribute("message", "Liên kết đã hết hạn hoặc tài khoản không tồn tại");
         return "message";
     }
 

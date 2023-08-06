@@ -13,14 +13,14 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 import com.jvb_intern.rental_acommodation.common.Constant;
-import com.jvb_intern.rental_acommodation.service.CustomerUserDetailService;
+import com.jvb_intern.rental_acommodation.service.Impl.CustomerUserDetailServiceImpl;
 
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
-    CustomerUserDetailService customerUserDetailService;
+    CustomerUserDetailServiceImpl customerUserDetailService;
 
     @Bean
     public static PasswordEncoder passwordEncoder() {
@@ -29,20 +29,25 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.authorizeHttpRequests((authorize) -> authorize
+        http
+        // .csrf().disable()
+            .authorizeHttpRequests((authorize) -> authorize
                 .antMatchers(
                         "/resources/**",
+                        "/uploaded_images/**",
                         "/static/**",
                         "/js/**",
                         "/css/**",
                         "/img/**",
                         "/vendor/**")
                 .permitAll()
+                .antMatchers("/home").permitAll()
                 .antMatchers("/register/**").permitAll()
+                .antMatchers("/rules").permitAll()
                 .antMatchers("/forgot-password/**").permitAll()
-                .antMatchers("/tenant/**").hasRole(Constant.ROLE_TENANT)
-                .antMatchers("/landlord/**").hasRole(Constant.ROLE_LANDLORD)
-                .antMatchers("/admin/**").hasRole(Constant.ROLE_ADMIN)
+                .antMatchers("/tenant/**").hasAuthority(Constant.ROLE_TENANT)
+                .antMatchers("/landlord/**").hasAuthority(Constant.ROLE_LANDLORD)
+                .antMatchers("/admin/**").hasAuthority(Constant.ROLE_ADMIN)
                 .anyRequest().authenticated()).formLogin(
                         form -> form
                                 .loginPage("/login")

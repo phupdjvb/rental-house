@@ -1,6 +1,8 @@
 package com.jvb_intern.rental_acommodation.entity;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -10,8 +12,11 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -27,9 +32,6 @@ public class Post {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long postId;
 
-    @Column(name = "accommodate_id")
-    private Long accommodateId;
-
     @Column(name = "title")
     private String title;
 
@@ -37,7 +39,7 @@ public class Post {
     private String content;
 
     @Column(name = "created_at")
-    private LocalDate createdAt;
+    private LocalDateTime createdAt;
 
     @Column(name = "updated_at")
     private LocalDate updatedAt;
@@ -61,4 +63,10 @@ public class Post {
     @OneToOne(mappedBy = "post")
     private Notification notification;
 
+    // Đánh dấu để bỏ qua orm, không liên quan gì đến db
+    @Transient
+    public String getPhotosImagePath() {
+        if (this.photo == null || this.postId == null) return null;
+        return "/post-photos/" + this.postId + "/" + this.photo;
+    }
 }

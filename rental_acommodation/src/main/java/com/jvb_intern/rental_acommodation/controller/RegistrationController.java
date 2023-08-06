@@ -9,12 +9,11 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import com.jvb_intern.rental_acommodation.common.Constant;
-import com.jvb_intern.rental_acommodation.dto.LandlordDto;
 import com.jvb_intern.rental_acommodation.dto.RegistrationDto;
-import com.jvb_intern.rental_acommodation.dto.TenantDto;
 import com.jvb_intern.rental_acommodation.entity.Landlord;
 import com.jvb_intern.rental_acommodation.entity.Tenant;
 import com.jvb_intern.rental_acommodation.service.LandlordService;
+import com.jvb_intern.rental_acommodation.service.RegistrationService;
 import com.jvb_intern.rental_acommodation.service.TenantService;
 
 import javax.validation.Valid;
@@ -27,11 +26,15 @@ public class RegistrationController {
     @Autowired
     private LandlordService landlordService;
 
+    @Autowired
+    private RegistrationService registrationService;
+
     public RegistrationController(TenantService tenantService, LandlordService landlordService) {
         this.tenantService = tenantService;
         this.landlordService = landlordService;
     }
 
+    /* MH: register.html */
     @GetMapping("/register")
     public String showRegistration(Model model) {
         RegistrationDto registrationDto = new RegistrationDto();
@@ -39,67 +42,62 @@ public class RegistrationController {
         return "register";
     }
 
+    /* MH: register.html */
+    @PostMapping("/register/save")
+    public String saveRegistration(@Valid @ModelAttribute("registration") RegistrationDto registrationDto, Model model,
+            BindingResult result) {
+        String role = registrationDto.getRole();
+
+        /* Nếu email đã tồn tại trên bảng còn lại */
+        if(registrationService.checkExistedAccount(registrationDto)) {
+            result.rejectValue("email", null, "Email này đã được đăng ký với vai trò khác!! Vui lòng đăng ký email khác");
+            return "redirect:/register?existed";
+        }
+
+        /* Nếu tenant tồn tại */
+        if(registrationService.checkExistedRole(registrationDto, Constant.ROLE_TENANT)) {
+            result.rejectValue("email", null, "Tài khoản đã tồn tại");
+            return "redirect:/register?existedRole";
+        }
+
+        /* Nếu landlord tồn tại */
+        if(registrationService.checkExistedRole(registrationDto, Constant.ROLE_LANDLORD)) {
+            result.rejectValue("email", null, "Tài khoản đã tồn tại");
+            return "redirect:/register?existedRole";
+        }
+        
+        /* Nếu mật khẩu không khớp nhau */
+        if(! registrationService.checkValidPassword(registrationDto)) {
+            result.rejectValue("password", null,
+                        "Mật khẩu không khớp nhau");
+                return "redirect:/register?fail";
+        }
+
+        /* Nếu có lỗi */
+        if(result.hasErrors()) {
+            model.addAttribute("registration", registrationDto);
+            return "register";
+        }
+
+        // Đăng ký thành công
+        if(role.equals(Constant.ROLE_TENANT)) {
+            tenantService.saveTenant(registrationDto);
+            return "redirect:/register?success";
+        }
+
+        landlordService.saveLandlord(registrationDto);
+        return "redirect:/register?success";
+    }
+
+    /* MH: login.html */
     @GetMapping("/login")
     public String login() {
         return "login";
     }
 
-    @PostMapping("/register/save")
-    public String saveRegistration(@Valid @ModelAttribute("registration") RegistrationDto registrationDto, Model model, BindingResult result) {
-        // data from dto
-        String role = registrationDto.getRole();
-        String email = registrationDto.getEmail();
-        String password = registrationDto.getPassword();
-        String confirmPassword = registrationDto.getConfirmPassword();
-
-        // Note: một email không thể tồn tại trên cả 2 bảng
-        if(role.equals(Constant.ROLE_TENANT)) {
-            Tenant existingTenant = tenantService.findByTenantEmail(email);
-            if(existingTenant != null && existingTenant.getTenantEmail() != null && !existingTenant.getTenantEmail().isEmpty()) {
-                result.rejectValue("email", null, 
-                            "Tài khoản đã tồn tại!!");
-                return "redirect:/register?existed";
-            } else if(!password.equals(confirmPassword)) {
-                result.rejectValue("email", null, 
-                            "Mật khẩu không khớp nhau");
-                return "redirect:/register?fail";
-            } else if(result.hasErrors()) {
-                model.addAttribute("registration", registrationDto);
-                return "register";
-            } else {
-                TenantDto tenantDto = new TenantDto();
-                tenantDto.setName(registrationDto.getName());
-                tenantDto.setEmail(registrationDto.getEmail());
-                tenantDto.setPhone(registrationDto.getPhone());
-                tenantDto.setRole(Constant.ROLE_TENANT);
-                tenantDto.setPassword(registrationDto.getPassword());
-                
-                tenantService.saveTenant(tenantDto);
-            }
-        } else {
-            Landlord existingLandlord = landlordService.findByLandlordEmail(email);
-            if(existingLandlord != null && existingLandlord.getLandlordEmail() != null && !existingLandlord.getLandlordEmail().isEmpty()) {
-                result.rejectValue("email", null, 
-                            "Tài khoản đã tồn tại!!");
-                return "redirect:/register?existed";
-            } else if(!password.equals(confirmPassword)) {
-                result.rejectValue("password", null, 
-                            "Mật khẩu không khớp nhau");
-                return "redirect:/register?fail";
-            } else if(result.hasErrors()) {
-                model.addAttribute("registration", registrationDto);
-                return "register";
-            } else {
-                LandlordDto landlordDto = new LandlordDto();
-                landlordDto.setName(registrationDto.getName());
-                landlordDto.setEmail(registrationDto.getEmail());
-                landlordDto.setPhone(registrationDto.getPhone());
-                landlordDto.setRole(Constant.ROLE_LANDLORD);
-                landlordDto.setPassword(registrationDto.getPassword());
-                
-                landlordService.saveLandlord(landlordDto);
-            }
-        }
-        return "redirect:/register?success";
+    /* MH: rules.html */
+    @GetMapping("/rules")
+    public String showRules() {
+        return "rules";
     }
 }

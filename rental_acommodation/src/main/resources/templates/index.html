@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" >
+
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1">
+    <meta name="description" content="Page not found or file not found error message is a hypertext transfer protocol (HTTP) standard response code">
+    <title>Trang chủ| Dành cho khách</title>
+
+    <!-- Font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;700&family=Ubuntu:wght@400;500;700&display=swap" rel="stylesheet">
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/nifty.min.css">
+    <link rel="stylesheet" href="/css/demo-purpose/demo-icons.min.css">
+    <link rel="stylesheet" href="/css/demo-purpose/demo-settings.min.css">
+</head>
+
+<body class="">
+    <!-- Page container -->
+    <div id="root" class="in-out-back">
+        <!-- Content -->
+        <section id="content" class="content">
+            <div class="content__boxed card rounded-0 w-100 min-vh-100 d-flex flex-column align-items-stretch justify-content-center">
+                <div class="content__wrap">
+
+                    <div class="text-center">
+                        <div class="page-title mb-3">Chào mừng bạn đến với Timtro247.vn</div>
+                        <!-- <h3 class="mb-4">
+                            <div class="text-primary">Đăng tin ngay, nhận quà liền tay</div>
+                        </h3> -->
+                        <p class="lead">Đăng ký ngay để không bỏ lỡ những thông tin mới nhất.</p>
+                    </div>
+
+                    <!-- Search form -->
+                    <div class="col-md-8 offset-md-2 py-4">
+                        <form class="searchbox input-group">
+                            <input class="searchbox__input form-control form-control-lg" type="search" placeholder="Nhập từ khoá cần tìm kiếm . . ." aria-label="Search">
+                            <div class="searchbox__btn-group">
+                                <button class="searchbox__btn btn btn-icon shadow-none border-0 btn-sm" type="submit">
+                                    <i class="demo-pli-magnifi-glass"></i>
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                    <!-- END : Search form -->
+
+                    <!-- Action buttons -->
+                    <div class="d-flex justify-content-center gap-3 mt-4">
+                        <a th:href = "@{/register}" class="btn btn-light">Đăng ký</a>
+                        <a th:href = "@{/login}" class="btn btn-primary">Đăng nhập</a>
+                    </div>
+                    <!-- END : Action buttons -->
+                </div>
+            </div>
+        </section>
+        <!-- End content -->
+       
+        <!-- Footer -->
+        <footer class="footer content__wrap border-top">
+            <div class="row mt-4">
+                <div class="col-12 col-sm-6 col-lg-4 mb-4">
+
+                    <p><strong class="h5 text-center">Timtro247</strong> <br></p>
+                    <p>Tìm trọ miến phí trên địa bàn Hà Nội</p>
+                    <p class="mb-0">Được phát triển <i class="demo-psi-heart-2 fs-4 text-danger mx-1"></i>bởi <a class="ml-1 fw-semibold btn-link" href="https://themeon.net/">HUS</a></p>
+
+                    <div class="mt-4 pt-3 border-top text-muted">
+                        <a href="#" class="btn btn-sm btn-icon btn-hover btn-primary text-inherit">
+                            <i class="demo-psi-facebook fs-5"></i>
+                        </a>
+                        <a href="#" class="btn btn-sm btn-icon btn-hover btn-info text-inherit">
+                            <i class="demo-psi-twitter fs-5"></i>
+                        </a>
+                        <a href="#" class="btn btn-sm btn-icon btn-hover btn-danger text-inherit">
+                            <i class="demo-psi-google-plus fs-5"></i>
+                        </a>
+                        <a href="#" class="btn btn-sm btn-icon btn-hover btn-warning text-inherit">
+                            <i class="demo-psi-instagram fs-5"></i>
+                        </a>
+                    </div>
+
+                </div>
+                <div class="col-12 col-sm-6 col-lg mb-4">
+
+                    <h5>Giới thiệu</h5>
+                    <nav class="nav flex-column">
+                        <a class="nav-link px-0" href="#">Về chúng tôi</a>
+                        <a class="nav-link px-0" href="#">Điều khoản và chính sách</a>
+                        <a class="nav-link px-0" href="#">Cộng đồng</a>
+                    </nav>
+
+                </div>
+                <div class="col-12 col-sm-6 col-lg mb-4">
+
+                    <h5>Hỗ trợ</h5>
+                    <nav class="nav flex-column">
+                        <a class="nav-link px-0" href="#">Trợ giúp</a>
+                        <a class="nav-link px-0" href="#">Chính sách bảo mật</a>
+                        <a class="nav-link px-0" href="#">Trợ giúp và hỗ trợ</a>
+                    </nav>
+
+                </div>
+                <div class="col-12 col-sm-6 col-lg mb-4">
+
+                    <h5>Liên hệ</h5>
+                    <nav class="nav flex-column">
+                        <a class="nav-link px-0" href="#">Số điện thoại</a>
+                        <a class="nav-link px-0" href="#">Email</a>
+                        <a class="nav-link px-0" href="#">Trung tâm trợ giúp</a>
+                    </nav>
+
+                </div>
+            </div>
+        </footer>
+        <!-- End footer -->
+    </div>
+    <!-- End page container -->
+   
+    <!-- Scroll button -->
+    <div class="scroll-container">
+        <a href="#root" class="scroll-page rounded-circle ratio ratio-1x1" aria-label="Scroll button"></a>
+    </div>
+   <!-- End scroll button -->
+
+    
+    <div id="_dm-offcanvas" class="offcanvas" tabindex="-1">
+        <!-- Offcanvas header -->
+        <div class="offcanvas-header">
+            <h5 class="offcanvas-title">Offcanvas Header</h5>
+            <button type="button" class="btn-close btn-lg text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        </div>
+
+        <!-- Offcanvas content -->
+        <div class="offcanvas-body">
+            <h5>Content Here</h5>
+            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sapiente eos nihil earum aliquam quod in dolor, aspernatur obcaecati et at. Dicta, ipsum aut, fugit nam dolore porro non est totam sapiente animi recusandae obcaecati dolorum, rem ullam cumque. Illum quidem reiciendis autem neque excepturi odit est accusantium, facilis provident molestias, dicta obcaecati itaque ducimus fuga iure in distinctio voluptate nesciunt dignissimos rem error a. Expedita officiis nam dolore dolores ea. Soluta repellendus delectus culpa quo. Ea tenetur impedit error quod exercitationem ut ad provident quisquam omnis! Nostrum quasi ex delectus vero, facilis aut recusandae deleniti beatae. Qui velit commodi inventore.</p>
+        </div>
+    </div>
+    
+    <!-- Script -->
+    <script src="/vendors/popperjs/popper.min.js" defer></script>
+    <script src="/vendors/bootstrap/bootstrap.min.js" defer></script>
+    <script src="/js/nifty.js" defer></script>
+    <script src="/js/demo-purpose-only.js" defer></script>
+</body>
+</html>
