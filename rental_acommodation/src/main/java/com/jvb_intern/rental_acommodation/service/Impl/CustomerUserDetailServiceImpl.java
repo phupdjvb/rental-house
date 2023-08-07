@@ -46,9 +46,9 @@ public class CustomerUserDetailServiceImpl implements CustomerUserDetailService 
                 );
             }
 
-            if ("admin@gmail.com".equals(email)) {
+            if (Constant.EMAIL_ADMIN.equals(email)) {
                 BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-                String encodePassword = passwordEncoder.encode("123456");
+                String encodePassword = passwordEncoder.encode(Constant.PASSWORD_ADMIN);
                 return new org.springframework.security.core.userdetails.User(
                     email,
                     encodePassword,

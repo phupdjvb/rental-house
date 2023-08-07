@@ -20,7 +20,7 @@ import com.jvb_intern.rental_acommodation.service.Impl.CustomerUserDetailService
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
-    CustomerUserDetailServiceImpl customerUserDetailService;
+    private CustomerUserDetailServiceImpl customerUserDetailService;
 
     @Bean
     public static PasswordEncoder passwordEncoder() {

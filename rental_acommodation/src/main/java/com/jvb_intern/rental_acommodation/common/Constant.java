@@ -10,4 +10,8 @@ public class Constant {
 
     public static final String BASE_DIRECTOR = System.getProperty("user.dir");
 
+    public static final String EMAIL_ADMIN = "admin@gmail.com";
+
+    public static final String PASSWORD_ADMIN = "123456";
+
 }
