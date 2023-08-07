@@ -45,7 +45,7 @@ jobs:
           DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
           DB_DATABASE: ${{ secrets.DB_DATABASE }} 
         run: |
-          cd rental_accommodate
+          cd "rental_acommodation"
           mvn clean package
           mvn test
           
