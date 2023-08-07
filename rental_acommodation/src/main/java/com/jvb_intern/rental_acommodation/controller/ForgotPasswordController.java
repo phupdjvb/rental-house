@@ -49,12 +49,12 @@ public class ForgotPasswordController {
             tenantService.updateResetPasswordToken(token, email);
             String resetPasswordLink = getSiteURL(request) + "/reset-password?token=" + token;
             sendEmail(email, resetPasswordLink);
-            model.addAttribute("message", "Hệ thống sẽ gửi mail đặt lại mật khẩu cho bạn. Vui lòng kiểm tra hộp thư!");
+            model.addAttribute("message", "Hệ thống đã gửi mail đặt lại mật khẩu cho bạn. Vui lòng kiểm tra hộp thư!");
         } else if (landlordService.existByEmail(email)) {
             landlordService.updateResetPasswordToken(token, email);
             String resetPasswordLink = getSiteURL(request) + "/reset-password?token=" + token;
             sendEmail(email, resetPasswordLink);
-            model.addAttribute("message", "Hệ thống sẽ gủi mail đặt lại mật khẩu cho bạn. Vui lòng kiểm tra hộp thư!");
+            model.addAttribute("message", "Hệ thống đã gủi mail đặt lại mật khẩu cho bạn. Vui lòng kiểm tra hộp thư!");
         }
         return "forgot-password-form";
     }
