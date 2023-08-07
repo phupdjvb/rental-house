@@ -30,6 +30,8 @@ jobs:
           path: ~/.m2
           key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
           restore-keys: ${{ runner.os }}-m2
+      - name: Configure MySQL JDBC connection
+        run: echo "spring.datasource.url=jdbc:mysql://${DB_HOST}:${DB_PORT}/${DB_DATABASE}" > src/main/resources/application.properties
       - name: Build and analyze
         env:
           DB_HOST: ${{ secrets.DB_HOST }}
