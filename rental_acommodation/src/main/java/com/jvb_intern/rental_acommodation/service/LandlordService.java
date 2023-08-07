@@ -1,14 +1,11 @@
 package com.jvb_intern.rental_acommodation.service;
 
-import java.util.List;
-
-import com.jvb_intern.rental_acommodation.dto.LandlordDto;
+import com.jvb_intern.rental_acommodation.dto.RegistrationDto;
 import com.jvb_intern.rental_acommodation.entity.Landlord;
 
 public interface LandlordService {
-    void saveLandlord(LandlordDto landlordDto);
+    void saveLandlord(RegistrationDto registrationDto);
     Landlord findByLandlordEmail(String email);
-    List<LandlordDto> findAllLandlord();
     boolean existByEmail(String email);
     boolean existByResetPasswordToken(String token);
 
