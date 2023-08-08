@@ -21,7 +21,7 @@ jobs:
       - name: Set up MySQL
         uses: mysql/setup-mysql@v1
         with:
-          mysql-version: '15.1'  # Replace with the correct MySQL version you are using
+          mysql-version: 15  # Replace with the correct MySQL version you are using
           # password: ${{ secrets.DB_PASSWORD }}  # Store your MySQL password as a secret in your repository
       - name: Export database configuration
         run: |
