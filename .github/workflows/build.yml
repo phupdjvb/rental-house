@@ -49,5 +49,5 @@ jobs:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
           SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
         run: |
-          cd "rental_acommodatation"
+          cd "rental_acommodation"
           mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=TTS_JAVA_PhamDuyPhu -Dsonar.projectName='TTS_JAVA_PhamDuyPhu'
