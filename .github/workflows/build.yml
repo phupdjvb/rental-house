@@ -32,9 +32,6 @@ jobs:
           DB_USER: ${{ secrets.DB_USER }}
           DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
           DB_DATABASE: ${{ secrets.DB_DATABASE }}
-      # after
-      - name: Build and Install Dependencies
-        run: mvn clean install  # This step generates dependencies
       - name: Cache SonarQube packages
         uses: actions/cache@v1
         with:
@@ -47,6 +44,10 @@ jobs:
           path: ~/.m2
           key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
           restore-keys: ${{ runner.os }}-m2
+    # after
+      - name: Build and Install Dependencies
+        run: mvn clean install  # This step generates dependencies
+        
       - name: Build and analyze
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
