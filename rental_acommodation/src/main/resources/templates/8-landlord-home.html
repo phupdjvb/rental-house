@@ -4,8 +4,9 @@
     <meta http-equiv="content-type" content="text/html; charset=UTF-8">
     <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1">
     <meta name="description"
-        content="Hiển thị các bài viết trên hệ thống">
-    <title>Trang chủ | Người cho thuê</title>
+        content="Technical process where a web-form checks if the information provided by a user is correct.">
+    <title>Bài đăng mới nhất | Người cho thuê</title>
+
     <!-- Font -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -13,10 +14,10 @@
         href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;700&family=Ubuntu:wght@400;500;700&display=swap"
         rel="stylesheet">
     <!-- CSS -->
-    <link rel="stylesheet" href="/css/bootstrap.min.css">
-    <link rel="stylesheet" href="/css/nifty.min.css">
-    <link rel="stylesheet" href="/css/demo-purpose/demo-icons.min.css">
-    <link rel="stylesheet" href="/css/demo-purpose/demo-settings.min.css">
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{/css/nifty.min.css}">
+    <link rel="stylesheet" th:href="@{/css/demo-purpose/demo-icons.min.css}">
+    <link rel="stylesheet" th:href="@{/css/demo-purpose/demo-settings.min.css}">
 </head>
 
 <body class="jumping">
@@ -30,7 +31,7 @@
                     <!-- Breadcrumb -->
                     <nav aria-label="breadcrumb">
                         <ol class="breadcrumb mb-0">
-                            <li class="breadcrumb-item"><a th:href= "@{/index}">Trang chủ</a></li>
+                            <li class="breadcrumb-item"><a th:href= "@{/landlord-home}">Trang chủ</a></li>
                         </ol>
                     </nav>
                     <!-- END : Breadcrumb -->
@@ -46,21 +47,46 @@
                     <div class="card h-100">
                         <div class="card-body d-flex flex-column">
                             <div class="card-title">
-                                <a class="h5 btn-link" th:href= "@{landlord/post-detail}" >Bài đăng số 1</a>
+                                <a class="blockquote btn-link" href="./other-pages-blank-page.html">Phòng trọ giá rẻ cho sinh viên khu vực Nguyễn Trãi</a>
                             </div>
-                            <p class="text-muted">Phòng trọ giá rẻ cho sinh viên</p>
 
-                            <div class="mt-auto">
-                                <a class="btn-link" th:href= "@{landlord/post-detail}">Chi tiết ></a>
+                            <!-- Image -->
+                            <div class="box">
+                                <img th:src= "@{/img/sample-img/img-2.jpg}" style="max-width: 100%; height: auto;">
+                            </div>
+                            
+                            <p class="text-muted mt-3">
+                                Giá điện: 4k <br>
+                                Giá nước: 100k <br>
+                                Còn 3 phòng cho thuê <br>
+                                Không chung chủ <br>
+                                Có wifi, chỗ để xe miễn phí <br>
+
+                            </p>
+                            <div class="mt-2">
+                                <a class="btn-link" href="./other-pages-blank-page.html">Chi tiết ></a>
                             </div>
                         </div>
                     </div>
                 </div>
-                <!-- End bài đăng số 1:  -->
 
+                <!-- Pagination -->
+                <div class="d-flex justify-content-center align-items-center">
+                    <div class="pagination">
+                        <ul class="pagination">
+                            <li class="page-item"><a class="page-link" href="#">Trở về</a></li>
+                            <li class="page-item"><a class="page-link" href="#">1</a></li>
+                            <li class="page-item"><a class="page-link" href="#">2</a></li>
+                            <li class="page-item"><a class="page-link" href="#">3</a></li>
+                            <li class="page-item"><a class="page-link" href="#">Tiếp</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <!-- End: Pagination -->
             </div>
             <!-- End: Content -->
-            <!-- FOOTER -->
+
+            <!--------------------------- Footer ------------------------------------>
             <footer class="mt-auto">
                 <div class="content__boxed">
                     <div class="content__wrap py-3 py-md-1 d-flex flex-column flex-md-row align-items-md-center">
@@ -79,6 +105,7 @@
 
         </section>
 
+
        <!-- Start: Header -->
         <header class="header">
             <div class="header__inner">
@@ -86,9 +113,10 @@
                 <div class="header__brand">
                     <div class="brand-wrap">
                         <!-- Logo -->
-                        <a th:href="@{/index}"  class="brand-img stretched-link">
-                            <img src="./assets/img/logo.svg" alt="Nifty Logo" class="Nifty logo" width="40" height="40">
+                        <a th:href="@{/home}" class="brand-img stretched-link">
+                            <img src="/img/logo.svg" alt="Nifty Logo" class="Nifty logo" width="40" height="40">
                         </a>
+
                         <!-- Brand  -->
                         <div class="brand-title">Timtro247</div>
                     </div>
@@ -171,7 +199,7 @@
                                     <!-- Thông báo 2 -->
                                     <div class="list-group-item list-group-item-action d-flex align-items-start mb-3">
                                         <div class="flex-shrink-0 me-3">
-                                            <img class="img-xs rounded-circle" src="./assets/img/profile-photos/3.png"
+                                            <img class="img-xs rounded-circle" src="/img/profile-photos/3.png"
                                                 alt="Profile Picture" loading="lazy">
                                         </div>
                                         <div class="flex-grow-1 ">
@@ -204,7 +232,7 @@
                                 <!-- User dropdown header -->
                                 <div class="d-flex align-items-center border-bottom px-3 py-2">
                                     <div class="flex-shrink-0">
-                                        <img class="img-sm rounded-circle" src="./assets/img/profile-photos/1.png"
+                                        <img class="img-sm rounded-circle" src="/img/profile-photos/1.png"
                                             alt="Profile Picture" loading="lazy">
                                     </div>
                                     <div class="flex-grow-1 ms-3">
@@ -265,7 +293,7 @@
                         <!-- Profile picture  -->
                         <div class="mininav-toggle text-center py-2">
                             <img class="mainnav__avatar img-md rounded-circle border"
-                                src="./assets/img/profile-photos/1.png" alt="Profile Picture">
+                                src="/img/profile-photos/1.png" alt="Profile Picture">
                         </div>
 
                         <div class="mininav-content collapse d-mn-max">
@@ -289,24 +317,24 @@
                         <ul class="mainnav__menu nav flex-column">
                             <!-- Category: 1 -->
                             <li class="nav-item">
-                                <a href="./8-landlord-home.html" class="mininav-toggle nav-link active"><i
+                                <a th:href="@{/landlord/landlord-home}" class="mininav-toggle nav-link active"><i
                                         class="demo-pli-home fs-5 me-2"></i>
                                     <span class="nav-label mininav-content ms-1">Trang chủ</span>
                                 </a>
                             </li>
                             <!-- Category 2:  -->
                             <li class="nav-item has-sub">
-                                <a href="./9-landlord-info.html" class="mininav-toggle nav-link collapse"><i
+                                <a href="#" class="mininav-toggle nav-link collapse"><i
                                         class="demo-pli-split-vertical-2 fs-5 me-2"></i>
                                     <span class="nav-label ms-1">Thông tin cá nhân</span>
                                 </a>
                                 <!-- Forms submenu list -->
                                 <ul class="mininav-content nav collapse">
                                     <li class="nav-item">
-                                        <a href="./9-landlord-info.html" class="nav-link ">Chi tiết tài khoản</a>
+                                        <a th:href="@{/landlord/landlord-info}" class="nav-link ">Chi tiết tài khoản</a>
                                     </li>
                                     <li class="nav-item">
-                                        <a href="./12-landlord-edit-info.html" class="nav-link">Chỉnh sửa thông tin</a>
+                                        <a th:href="@{/landlord/landlord-edit-info}" class="nav-link">Chỉnh sửa thông tin</a>
                                     </li>
                                 </ul>
                                 <!-- END : Forms submenu list -->
@@ -320,13 +348,13 @@
                                 <!-- Layouts submenu list -->
                                 <ul class="mininav-content nav collapse">
                                     <li class="nav-item">
-                                        <a href="./10-landlord-post.html" class="nav-link">Tạo bài đăng</a>
+                                        <a th:href="@{/landlord/landlord-post}" class="nav-link">Tạo bài đăng</a>
                                     </li>
                                     <li class="nav-item">
-                                        <a href="./11-landlord-posted.html" class="nav-link">Bài viết đã đăng</a>
+                                        <a th:href="@{/landlord/landlord-posted}" class="nav-link">Bài viết đã đăng</a>
                                     </li>
                                     <li class="nav-item">
-                                        <a href="./22-landlord-list-post.html" class="nav-link">Bài đăng mới nhất</a>
+                                        <a th:href="@{/landlord/landlord-list-post}" class="nav-link">Bài đăng mới nhất</a>
                                     </li>
                                 </ul>
                             </li>
@@ -341,10 +369,10 @@
                                 <!-- Blog Apps submenu list -->
                                 <ul class="mininav-content nav collapse">
                                     <li class="nav-item">
-                                        <a href="./13-landlord-date.html" class="nav-link">Lịch hẹn xem phòng</a>
+                                        <a th:href="@{/landlord/landlord-date}" class="nav-link">Lịch hẹn xem phòng</a>
                                     </li>
                                     <li class="nav-item">
-                                        <a href="./14-landlord-queue.html" class="nav-link">Lịch hẹn chờ xác nhận</a>
+                                        <a th:href="@{/landlord/landlord-queue}" class="nav-link">Lịch hẹn chờ xác nhận</a>
                                     </li>
                                 </ul>
                                 <!-- END : Blog Apps submenu list -->
@@ -353,7 +381,7 @@
                            
                             <!-- Category 5: Cài đặt -->
                             <li class="nav-item">
-                                <a href="./widgets.html" class="nav-link mininav-toggle"><i
+                                <a href="#" class="nav-link mininav-toggle"><i
                                         class="demo-pli-gear fs-5 me-2"></i>
 
                                     <span class="nav-label mininav-content ms-1">Cài đặt</span>
@@ -376,20 +404,12 @@
                     </div>
                     <!-- End - Bottom navigation menu -->
                 </div>
-            </div>
         </nav>
     </div>
-
-    <!-- Button chuyên lên đầu trang -->
-    <div class="scroll-container">
-        <a href="#root" class="scroll-page rounded-circle ratio ratio-1x1" aria-label="Scroll button"></a>
-    </div>
-    <!-- End button chuyên lên đầu trang -->
-    
     <!-- End: Thanh điều hướng -->
-    <script src="/vendors/popperjs/popper.min.js" defer></script>
-    <script src="/vendors/bootstrap/bootstrap.min.js" defer></script>
-    <script src="/js/nifty.js" defer></script>
-    <script src="/js/demo-purpose-only.js" defer></script>
+    <script th:src="@{/vendors/popperjs/popper.min.js}" defer></script>
+    <script src="@{/vendors/bootstrap/bootstrap.min.js}" defer></script>
+    <script src="@{/js/nifty.js}" defer></script>
+    <script src="@{/js/demo-purpose-only.js}" defer></script>
 </body>
 </html>
