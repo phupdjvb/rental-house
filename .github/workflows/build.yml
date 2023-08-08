@@ -51,6 +51,8 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
           SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
+          DB_URL: jdbc:mysql://localhost:3306/rental_accommodation?useSSL=false
+          DB_USERNAME: root
         run: |
           cd "rental_acommodation"
           mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=TTS_JAVA_PhamDuyPhu -Dsonar.projectName='TTS_JAVA_PhamDuyPhu'
