@@ -18,10 +18,10 @@ jobs:
         uses: actions/setup-java@v1
         with:
           java-version: 11.0.8
-      - name: Set up MySQL
-        uses: mysql/setup-mysql@v1
-        with:
-          mysql-version: 2.307.1  # Replace with the correct MySQL version you are using
+      # - name: Set up MySQL
+      #   uses: mysql/setup-mysql@v1
+      #   with:
+      #     mysql-version: 2.307.1  # Replace with the correct MySQL version you are using
           # password: ${{ secrets.DB_PASSWORD }}  # Store your MySQL password as a secret in your repository
       - name: Export database configuration
         run: |
