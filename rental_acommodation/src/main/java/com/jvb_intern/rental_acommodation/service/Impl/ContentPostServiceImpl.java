@@ -1,4 +1,4 @@
-package com.jvb_intern.rental_acommodation.service.Impl;
+package com.jvb_intern.rental_acommodation.service.impl;
 
 import java.time.LocalDateTime;
 
@@ -20,8 +20,8 @@ public class ContentPostServiceImpl implements ContentPostService {
 
     @Autowired
     private LandlordRepository landlordRepository;
-    
-    /*Save post and accommodata in database and return "savedPost" object */
+
+    /* Save post and accommodata in database and return "savedPost" object */
     @Override
     public Post savePostAndAccommodate(ContentPostDto newPostDto, String landlordEmail) {
         Post savedPost = savePost(newPostDto, landlordEmail);
@@ -59,10 +59,10 @@ public class ContentPostServiceImpl implements ContentPostService {
         newPost.setContent(newPostDto.getContent());
         newPost.setPhoto(newPostDto.getPhoto());
         newPost.setIsDeleted(false);
-        
+
         Landlord landlord = landlordRepository.findByLandlordEmail(landlordEmail);
         newPost.setLandlord(landlord);
-        
+
         // get current time
         LocalDateTime currentTime = LocalDateTime.now();
         newPost.setCreatedAt(currentTime);

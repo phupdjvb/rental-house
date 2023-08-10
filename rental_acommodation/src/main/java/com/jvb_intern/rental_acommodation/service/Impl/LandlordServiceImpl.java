@@ -1,4 +1,4 @@
-package com.jvb_intern.rental_acommodation.service.Impl;
+package com.jvb_intern.rental_acommodation.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -27,7 +27,9 @@ public class LandlordServiceImpl implements LandlordService {
 
     @Override
     public void saveLandlord(RegistrationDto registrationDto) {
-        if(!registrationDto.getRole().equals(Constant.ROLE_LANDLORD)) return;
+        if (!registrationDto.getRole().equals(Constant.ROLE_LANDLORD)) {
+            return;
+        }
 
         Landlord newLandlord = new Landlord();
 
@@ -51,7 +53,6 @@ public class LandlordServiceImpl implements LandlordService {
     /* Cập nhật mật khẩu */
     @Override
     public void updatePassword(Landlord landlord, String newPassword) {
-        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         String encodePassword = passwordEncoder.encode(newPassword);
         landlord.setPassword(encodePassword);
 
@@ -64,19 +65,19 @@ public class LandlordServiceImpl implements LandlordService {
     @Override
     public void updateResetPasswordToken(String token, String email) {
         Landlord landlord = landlordReposiry.findByLandlordEmail(email);
-        if(landlord != null) {
+        if (landlord != null) {
             landlord.setResetPasswordToken(token);
             landlordReposiry.save(landlord);
         } else {
             throw new UsernameNotFoundException("Không tìm thấy tài khoản trong hệ thống");
         }
-      
+
     }
 
     /* Tìm thông qua token */
     @Override
     public Landlord findByResetPasswordToken(String token) {
-       return landlordReposiry.findByResetPasswordToken(token);
+        return landlordReposiry.findByResetPasswordToken(token);
     }
 
     /* Check mail tồn tại */
@@ -84,7 +85,7 @@ public class LandlordServiceImpl implements LandlordService {
     public boolean existByEmail(String email) {
         return landlordReposiry.findByLandlordEmail(email) != null;
     }
- 
+
     /* Check token tồn tại */
     @Override
     public boolean existByResetPasswordToken(String token) {

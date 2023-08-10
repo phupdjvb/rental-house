@@ -40,6 +40,6 @@ public class NotificationDating {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "tenant_id")
-    private Tenant tenant ;
+    private Tenant tenant;
 
 }

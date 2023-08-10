@@ -10,14 +10,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 import com.jvb_intern.rental_acommodation.common.Constant;
 import com.jvb_intern.rental_acommodation.dto.RegistrationDto;
-import com.jvb_intern.rental_acommodation.entity.Landlord;
-import com.jvb_intern.rental_acommodation.entity.Tenant;
 import com.jvb_intern.rental_acommodation.service.LandlordService;
 import com.jvb_intern.rental_acommodation.service.RegistrationService;
 import com.jvb_intern.rental_acommodation.service.TenantService;
 
 import javax.validation.Valid;
-
 @Controller
 public class RegistrationController {
     @Autowired
@@ -50,19 +47,19 @@ public class RegistrationController {
 
         /* Nếu email đã tồn tại trên bảng còn lại */
         if(registrationService.checkExistedAccount(registrationDto)) {
-            result.rejectValue("email", null, "Email này đã được đăng ký với vai trò khác!! Vui lòng đăng ký email khác");
+            result.rejectValue(Constant.EMAIL, "existed", "Email này đã được đăng ký với vai trò khác!! Vui lòng đăng ký email khác");
             return "redirect:/register?existed";
         }
 
         /* Nếu tenant tồn tại */
         if(registrationService.checkExistedRole(registrationDto, Constant.ROLE_TENANT)) {
-            result.rejectValue("email", null, "Tài khoản đã tồn tại");
+            result.rejectValue(Constant.EMAIL, "existedRole", "Tài khoản đã tồn tại");
             return "redirect:/register?existedRole";
         }
 
         /* Nếu landlord tồn tại */
         if(registrationService.checkExistedRole(registrationDto, Constant.ROLE_LANDLORD)) {
-            result.rejectValue("email", null, "Tài khoản đã tồn tại");
+            result.rejectValue(Constant.EMAIL, "existedRole", "Tài khoản đã tồn tại");
             return "redirect:/register?existedRole";
         }
         
@@ -70,7 +67,7 @@ public class RegistrationController {
         if(! registrationService.checkValidPassword(registrationDto)) {
             result.rejectValue("password", null,
                         "Mật khẩu không khớp nhau");
-                return "redirect:/register?fail";
+            return "redirect:/register?fail";
         }
 
         /* Nếu có lỗi */

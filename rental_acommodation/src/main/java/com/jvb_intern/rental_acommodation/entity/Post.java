@@ -47,7 +47,7 @@ public class Post {
 
     @Column(name = "photo")
     private String photo;
-    
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "landlord_id")
     private Landlord landlord;
@@ -64,7 +64,9 @@ public class Post {
     // Đánh dấu để bỏ qua orm, không liên quan gì đến db
     @Transient
     public String getPhotosImagePath() {
-        if (this.photo == null || this.postId == null) return null;
+        if (this.photo == null || this.postId == null) {
+            return null;
+        }
         return "/post-photos/" + this.postId + "/" + this.photo;
     }
 }
