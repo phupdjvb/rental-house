@@ -8,8 +8,8 @@ import com.jvb_intern.rental_acommodation.entity.Tenant;
 
 @Repository
 public interface TenantRepository extends JpaRepository<Tenant, Long> {
-    public Tenant findByTenantEmail(String tenantEmail);
-    
+    Tenant findByTenantEmail(String tenantEmail);
+
     @Query("SELECT u FROM Tenant u WHERE u.resetPasswordToken = ?1")
-    public Tenant findByResetPasswordToken(String resetPasswordToken);
+    Tenant findByResetPasswordToken(String resetPasswordToken);
 }

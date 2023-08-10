@@ -26,7 +26,7 @@ public class PostDeletion {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long postDeletionId;
-    
+
     @Column(name = "deletion_date")
     private LocalDate deletionDate;
 

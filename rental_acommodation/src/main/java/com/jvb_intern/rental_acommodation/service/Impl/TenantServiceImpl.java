@@ -1,7 +1,4 @@
-package com.jvb_intern.rental_acommodation.service.Impl;
-
-import java.util.List;
-import java.util.stream.Collectors;
+package com.jvb_intern.rental_acommodation.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -23,7 +20,7 @@ public class TenantServiceImpl implements TenantService {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    //Contructor
+    // Contructor
     public TenantServiceImpl(TenantRepository tenantRepository, PasswordEncoder passwordEncoder) {
         this.tenantRepository = tenantRepository;
         this.passwordEncoder = passwordEncoder;
@@ -31,7 +28,9 @@ public class TenantServiceImpl implements TenantService {
 
     @Override
     public void saveTenant(RegistrationDto registrationDto) {
-        if(! registrationDto.getRole().equals(Constant.ROLE_TENANT)) return;
+        if (!registrationDto.getRole().equals(Constant.ROLE_TENANT)) {
+            return;
+        }
 
         Tenant newTenant = new Tenant();
         newTenant.setName(registrationDto.getName());
@@ -45,16 +44,15 @@ public class TenantServiceImpl implements TenantService {
         tenantRepository.save(newTenant);
     }
 
-    /*Tìm email */
+    /* Tìm email */
     @Override
     public Tenant findByTenantEmail(String email) {
-       return tenantRepository.findByTenantEmail(email);
+        return tenantRepository.findByTenantEmail(email);
     }
 
     /* Cập nhật password */
     @Override
     public void updatePassword(Tenant tenant, String newPassword) {
-        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         String encodedPassword = passwordEncoder.encode(newPassword);
         tenant.setPassword(encodedPassword);
 
@@ -62,25 +60,25 @@ public class TenantServiceImpl implements TenantService {
         tenantRepository.save(tenant);
     }
 
-    /*Cập nhật token khi reset mật khẩu */
+    /* Cập nhật token khi reset mật khẩu */
     @Override
     public void updateResetPasswordToken(String token, String email) {
-       Tenant tenant = tenantRepository.findByTenantEmail(email);
-       if(tenant != null) {
+        Tenant tenant = tenantRepository.findByTenantEmail(email);
+        if (tenant != null) {
             tenant.setResetPasswordToken(token);
             tenantRepository.save(tenant);
-       } else {
+        } else {
             throw new UsernameNotFoundException("Không tìm thấy tài khoản trong hệ thống");
-       }
+        }
     }
 
     /* Tìm thông qua token */
     @Override
     public Tenant findByResetPasswordToken(String token) {
-       return tenantRepository.findByResetPasswordToken(token);
+        return tenantRepository.findByResetPasswordToken(token);
     }
 
-    /* Check mail tồn tại*/
+    /* Check mail tồn tại */
     @Override
     public boolean existByEmail(String email) {
         return tenantRepository.findByTenantEmail(email) != null;
