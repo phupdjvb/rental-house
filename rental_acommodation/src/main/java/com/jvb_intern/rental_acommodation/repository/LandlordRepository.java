@@ -8,8 +8,8 @@ import com.jvb_intern.rental_acommodation.entity.Landlord;
 
 @Repository
 public interface LandlordRepository extends JpaRepository<Landlord, Long> {
-    public Landlord findByLandlordEmail(String email);
+    Landlord findByLandlordEmail(String email);
 
     @Query("SELECT u FROM Landlord u WHERE u.resetPasswordToken = ?1")
-    public Landlord findByResetPasswordToken(String resetPasswordToken);
+    Landlord findByResetPasswordToken(String resetPasswordToken);
 }

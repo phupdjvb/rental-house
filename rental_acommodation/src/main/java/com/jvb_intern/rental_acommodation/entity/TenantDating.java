@@ -25,7 +25,7 @@ public class TenantDating {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long datingId;
-    
+
     @Column(name = "dating_time")
     private LocalDate datingTime;
 

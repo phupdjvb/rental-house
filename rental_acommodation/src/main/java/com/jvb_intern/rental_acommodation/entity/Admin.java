@@ -39,6 +39,4 @@ public class Admin {
     @OneToMany(mappedBy = "admin")
     private List<PostDeletion> postDeletions;
 
-
-
 }

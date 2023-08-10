@@ -42,7 +42,7 @@ public class PostController {
         // Xử lý tên file, thư mục lưu ảnh
         if(!uploadedFile.isEmpty()) {
             try {
-                String uploadDir = Constant.BASE_DIRECTOR + "/uploaded_images/";
+                String uploadDir = Constant.BASE_DIRECTOR + "/rental_acommodation/src/main/resources/static/img/uploaded_images/";
                 File directory = new File(uploadDir);
 
                 // Nếu chưa tồn tại
@@ -55,7 +55,7 @@ public class PostController {
                 fileUploadService.saveFile(uploadDir, fileName, uploadedFile);
 
                 // Lấy url
-                newPostDto.setPhoto("file://" + uploadDir + fileName);
+                newPostDto.setPhoto(StringUtils.cleanPath("/img/uploaded_images/" + fileName));
             } catch (Exception e) {
                 e.printStackTrace();
             }

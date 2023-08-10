@@ -36,7 +36,7 @@
                     <!-- Breadcrumb -->
                     <nav aria-label="breadcrumb">
                         <ol class="breadcrumb mb-0">
-                            <li class="breadcrumb-item"><a th:href=@{/index}>Trang chủ</a></li>
+                            <li class="breadcrumb-item"><a th:href=@{/home}>Trang chủ</a></li>
                             <li class="breadcrumb-item active" aria-current="page">Bài đăng mới</li>
                         </ol>
                     </nav>
@@ -48,8 +48,8 @@
 
             <!-- Start: Content -->
             <div class="content__boxed content__wrap row col-md-12 mb-2">
-                <div class = "card">
-                    <div class = "card-body">
+                <div class="card">
+                    <div class="card-body">
 
                         <!-- noti -->
                         <div th:if="${param.success}">
@@ -58,37 +58,40 @@
 
                         <!-- Start: Form model -->
                         <!-- enctype = "multipart/form-data" kai báo rằng form có mục upload file -->
-                        <form class = "row g-3 needs-validation" role = "form" th:action = "@{/landlord/landlord-post}" th:object = "${newPostDto}" th:method = "post" enctype = "multipart/form-data">
+                        <form class="row g-3 needs-validation" role="form" th:action="@{/landlord/landlord-post}"
+                            th:object="${newPostDto}" th:method="post" enctype="multipart/form-data">
 
                             <!-- Input title -->
                             <div class="col-md-12">
-                                <label for = "title" class="form-label"><b>Tiêu đề bài đăng</b></label>
-                                <input type="text" class = "form-control" name = "title" id = "title" th:field = "*{title}">
+                                <label for="title" class="form-label"><b>Tiêu đề bài đăng</b></label>
+                                <input type="text" class="form-control" name="title" id="title" th:field="*{title}">
                             </div>
 
                             <!-- Input địa chỉ -->
                             <div class="col-md-12">
-                                <label for = "address" class="form-label"><b>Địa chỉ</b></label>
-                                <input type="text" class = "form-control" name = "address" id = "address" th:field = *{address}>
+                                <label for="address" class="form-label"><b>Địa chỉ</b></label>
+                                <input type="text" class="form-control" name="address" id="address" th:field=*{address}>
                             </div>
 
                             <!-- Input: Loại phòng -->
-                            <div class = "col-md-6 mt-4">
-                                <label for = "price_category"><b>Loại phòng</b></label>
-                                <select class = "form-control" name="priceCategory" id="price_category" th:field = "*{priceCategory}">
+                            <div class="col-md-6 mt-4">
+                                <label for="price_category"><b>Loại phòng</b></label>
+                                <select class="form-control" name="priceCategory" id="price_category"
+                                    th:field="*{priceCategory}">
                                     <option value="Giá rẻ">Giá rẻ</option>
-                                    <option value="Bình dân">Bình dân</option>
-                                    <option value="Cao cấp">Cao cấp</option>
+                                    <option value="Homestay">Homestay</option>
+                                    <option value="Chung cư mini">Chung cư mini</option>
                                 </select>
                             </div>
 
                             <!-- Input: khu vực -->
                             <div class="col-md-6 mt-4">
-                                <label for = "area"><b>Khu vực</b></label>
-                                <select class = "form-control" name="area" id = "area" th:field = "*{area}">
+                                <label for="area"><b>Khu vực</b></label>
+                                <select class="form-control" name="area" id="area" th:field="*{area}">
                                     <option value="Khác">Tuỳ chọn</option>
                                     <option value="Quận Ba Đình">Quận Ba Đình</option>
                                     <option value="Quận Bắc Từ Liêm">Quận Bắc Từ Liêm</option>
+                                    <option value="Quận Cầu Giấy">Quận Cầu Giấy</option>
                                     <option value="Quận Đống Đa">Quận Đống Đa</option>
                                     <option value="Quận Hai Bà Trưng">Quận Hai Bà Trưng</option>
                                     <option value="Quận Hà Đông">Quận Hà Đông</option>
@@ -96,33 +99,38 @@
                                     <option value="Quận Hoàng Mai">Quận Hoàng Mai</option>
                                     <option value="Quận Nam Từ Liêm">Quận Nam Từ Liêm</option>
                                     <option value="Quận Thanh Xuân">Quận Thanh Xuân</option>
+                                    <option value="Quận Tây Hồ">Quận Tây Hồ</option>
                                 </select>
                             </div>
 
                             <!-- Input: Giá phòng -->
                             <div class="col-md-6">
-                                <label for= "room_price" class="form-label"><b>Giá phòng (Triệu đồng)</b></label>
-                                <input type="text" class = "form-control" name = "roomPrice" id = "room_price" placeholder="Triệu đồng" th:field = *{roomPrice}>
+                                <label for="room_price" class="form-label"><b>Giá phòng (Triệu đồng)</b></label>
+                                <input type="text" class="form-control" name="roomPrice" id="room_price"
+                                    placeholder="Triệu đồng" th:field=*{roomPrice}>
                             </div>
 
                             <!-- Input: Diện tích -->
                             <div class="col-md-6">
                                 <label for="square" class="form-label"><b>Diện tích (m2)</b></label>
-                                <input type="text" class = "form-control" name = "square" id = "square" placeholder="m2" th:field = "*{square}">
+                                <input type="text" class="form-control" name="square" id="square" placeholder="m2"
+                                    th:field="*{square}">
                             </div>
 
-                           <!-- Checkbox: Tiện ích -->
-                           <label><b>Tiện ích</b></label><br>
-                           <div class="col-md-6">
-                                <input type="checkbox" id="wifiCheckbox" name="wifi" value="Có" th:field = "*{wifi}">
+                            <!-- Checkbox: Tiện ích -->
+                            <label><b>Tiện ích</b></label><br>
+                            <div class="col-md-6">
+                                <input type="checkbox" id="wifiCheckbox" name="wifi" value="Có" th:field="*{wifi}">
                                 <label for="wifiCheckbox">Wifi</label><br>
 
-                                <input type="checkbox" id="parkingCheckbox" name="parking" value="Có" th:field = "*{parking}">
+                                <input type="checkbox" id="parkingCheckbox" name="parking" value="Có"
+                                    th:field="*{parking}">
                                 <label for="parkingCheckbox">Bãi đỗ xe</label><br>
                             </div>
 
-                            <div class = "col-md-6">
-                                <input type="checkbox" id="conditionerCheckbox" name="conditioner" value="Có" th:field = "*{conditioner}">
+                            <div class="col-md-6">
+                                <input type="checkbox" id="conditionerCheckbox" name="conditioner" value="Có"
+                                    th:field="*{conditioner}">
                                 <label for="conditionerCheckbox">Điều hoà</label><br>
 
                                 <input type="checkbox" id="otherCheckbox">
@@ -130,10 +138,10 @@
                             </div>
 
                             <!--Start: Text Editor -->
-                            <label for = "tinymce-text-editor"><b>Mô tả chi tiết</b></label>
+                            <label for="tinymce-text-editor"><b>Mô tả chi tiết</b></label>
                             <div class="col-md-12">
                                 <div class="form-group mb-3">
-                                    <textarea id="tinymce-text-editor" th:field = "*{content}"
+                                    <textarea id="tinymce-text-editor" th:field="*{content}"
                                         style="width:100%; height:400px">Nội dung bài đăng</textarea>
                                     <script>
                                         tinymce.init({
@@ -149,9 +157,10 @@
                             <!-- End: Text editor -->
 
                             <!-- Input Image Upload -->
-                            <div class = "col-md-6">
+                            <div class="col-md-6">
                                 <label for="photoFile">Ảnh phòng trọ</label><br>
-                                <input type="file" name = "photoFile" id = "photoFile" th:field="*{photoFile}" accept ="image/png, image/jpeg">
+                                <input type="file" name="photoFile" id="photoFile" th:field="*{photoFile}"
+                                    accept="image/png, image/jpeg">
                             </div>
 
                             <div th:if="${newPostDto.photo != null}">
@@ -163,7 +172,7 @@
                             </div>
                         </form>
                         <!-- Message -->
-                    <!-- End: Form model -->
+                        <!-- End: Form model -->
                     </div>
                 </div>
             </div>
@@ -412,10 +421,10 @@
                                 <!-- Forms submenu list -->
                                 <ul class="mininav-content nav collapse">
                                     <li class="nav-item">
-                                        <a th:href=@{/landlord-info} class="nav-link">Chi tiết tài khoản</a>
+                                        <a th:href=@{/landlord/landlord-info} class="nav-link">Chi tiết tài khoản</a>
                                     </li>
                                     <li class="nav-item">
-                                        <a th:href=@{/landlord-edit-info} class="nav-link">Chỉnh sửa thông tin</a>
+                                        <a th:href=@{/landlord/landlord-edit-info} class="nav-link">Chỉnh sửa thông tin</a>
                                     </li>
                                 </ul>
                                 <!-- END : Forms submenu list -->
@@ -493,7 +502,7 @@
         <a href="#root" class="scroll-page rounded-circle ratio ratio-1x1" aria-label="Scroll button"></a>
     </div>
     <!-- End button chuyên lên đầu trang -->
-    
+
     <!-- End: Thanh điều hướng -->
     <script src="/vendors/popperjs/popper.min.js" defer></script>
     <script src="/vendors/bootstrap/bootstrap.min.js" defer></script>

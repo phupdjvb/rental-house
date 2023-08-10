@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="en"  xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <meta http-equiv="content-type" content="text/html; charset=UTF-8">
     <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1">
@@ -9,7 +10,9 @@
     <!-- Fonts-->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;700&family=Ubuntu:wght@400;500;700&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;700&family=Ubuntu:wght@400;500;700&display=swap"
+        rel="stylesheet">
 
     <!-- CSS -->
     <link rel="stylesheet" href="/css/bootstrap.min.css">
@@ -47,27 +50,18 @@
                             </div>
 
                             <!-- Start form đăng nhập -->
-                            <form class="w-md-400px d-inline-flex row mb-2" method="post" role="form" th:action="@{/login}">
+                            <form class="w-md-400px d-inline-flex row mb-2" method="post" role="form"
+                                th:action="@{/login}">
                                 <div class="form-group mb-3">
                                     <label class="control-label"> Email</label>
-                                    <input
-                                        type="text"
-                                        id="email"
-                                        name="email"
-                                        class="form-control"
-                                        placeholder= "Nhập địa chỉ email"
-                                    />
+                                    <input type="text" id="email" name="email" class="form-control"
+                                        placeholder="Nhập địa chỉ email" />
                                 </div>
-        
+
                                 <div class="form-group mb-3">
                                     <label class="control-label"> Mật khẩu</label>
-                                    <input
-                                            type="password"
-                                            id="password"
-                                            name="password"
-                                            class="form-control"
-                                            placeholder="Nhập mật khẩu"
-                                    />
+                                    <input type="password" id="password" name="password" class="form-control"
+                                        placeholder="Nhập mật khẩu" />
                                 </div>
 
                                 <div class="d-grid mt-4">
@@ -76,24 +70,28 @@
                             </form>
 
                             <div class="d-flex justify-content-between mt-4">
-                                <a th:href= @{/forgot-password} class="btn-link text-decoration-none">Quên mật khẩu?</a>
+                                <a th:href=@{/forgot-password} class="btn-link text-decoration-none">Quên mật khẩu?</a>
                                 <a th:href=@{/register} class="btn-link text-decoration-none">Tạo tài khoản</a>
                             </div>
 
                             <div class="d-flex align-items-center justify-content-between border-top pt-3 mt-3">
                                 <h5 class="m-0">Đăng nhập với</h5>
-                                 <!-- Social media buttons -->
-                                 <div class="ms-3">
-                                    <a href="https://www.facebook.com/" class="btn btn-sm btn-icon btn-hover btn-primary text-inherit">
+                                <!-- Social media buttons -->
+                                <div class="ms-3">
+                                    <a href="https://www.facebook.com/"
+                                        class="btn btn-sm btn-icon btn-hover btn-primary text-inherit">
                                         <i class="demo-psi-facebook fs-5"></i>
                                     </a>
-                                    <a href="https://twitter.com/?lang=vi" class="btn btn-sm btn-icon btn-hover btn-info text-inherit">
+                                    <a href="https://twitter.com/?lang=vi"
+                                        class="btn btn-sm btn-icon btn-hover btn-info text-inherit">
                                         <i class="demo-psi-twitter fs-5"></i>
                                     </a>
-                                    <a href="https://www.google.com/intl/vi/gmail/about/" class="btn btn-sm btn-icon btn-hover btn-danger text-inherit">
+                                    <a href="https://www.google.com/intl/vi/gmail/about/"
+                                        class="btn btn-sm btn-icon btn-hover btn-danger text-inherit">
                                         <i class="demo-psi-google-plus fs-5"></i>
                                     </a>
-                                    <a href="https://www.instagram.com/" class="btn btn-sm btn-icon btn-hover btn-warning text-inherit">
+                                    <a href="https://www.instagram.com/"
+                                        class="btn btn-sm btn-icon btn-hover btn-warning text-inherit">
                                         <i class="demo-psi-instagram fs-5"></i>
                                     </a>
                                 </div>
@@ -111,7 +109,8 @@
     <!-- End: Page container -->
 
     <!-- Boxed Layout -->
-    <div id="_dm-boxedBgContent" class="_dm-boxbg offcanvas offcanvas-bottom" data-bs-backdrop="false" data-bs-scroll="true" tabindex="-1">
+    <div id="_dm-boxedBgContent" class="_dm-boxbg offcanvas offcanvas-bottom" data-bs-backdrop="false"
+        data-bs-scroll="true" tabindex="-1">
         <div class="offcanvas-body p-4">
         </div>
     </div>
@@ -122,4 +121,5 @@
     <script src="/js/nifty.js" defer></script>
     <script src="/js/demo-purpose-only.js" defer></script>
 </body>
+
 </html>

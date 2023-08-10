@@ -13,13 +13,18 @@
 	<version>0.0.1-SNAPSHOT</version>
 	<name>rental_acommodation</name>
 	<description>Demo project for Spring Boot</description>
+  
 	<properties>
 		<java.version>11</java.version>
+		<!-- Các thông tin cấu hình cho SonarQube -->
+		<sonar.projectKey>TTS_JAVA_PhamDuyPhu</sonar.projectKey>
+		<sonar.projectName>TTS_JAVA_PhamDuyPhu</sonar.projectName>
 		<sonar.host.url>http://192.168.0.179:9001</sonar.host.url>
-    		<sonar.login>sqp_20387eb4ce63bb47cf404fe25dc82966be5530c2</sonar.login>
+		<sonar.login>java.tts</sonar.login>
+		<sonar.password>javatts@2023</sonar.password>
 	</properties>
+  
 	<dependencies>
-
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-actuator</artifactId>
@@ -39,7 +44,6 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
-
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-devtools</artifactId>
@@ -75,12 +79,6 @@
 			<artifactId>spring-boot-starter-security</artifactId>
 		</dependency>
 
-		<!-- <dependency>
-			<groupId>nz.net.ultraq.thymeleaf</groupId>
-			<artifactId>thymeleaf-layout-dialect</artifactId>
-			<version>1.3.1</version>
-		</dependency> -->
-
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-mail</artifactId>
@@ -101,7 +99,12 @@
 					</excludes>
 				</configuration>
 			</plugin>
+			<!-- Plugin sonar -->
+			<plugin>
+                <groupId>org.sonarsource.scanner.maven</groupId>
+                <artifactId>sonar-maven-plugin</artifactId>
+                <version>3.9.1.2184</version>
+            </plugin>
 		</plugins>
 	</build>
-
 </project>

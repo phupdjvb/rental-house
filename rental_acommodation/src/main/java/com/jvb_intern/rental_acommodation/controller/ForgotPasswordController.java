@@ -16,6 +16,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import com.jvb_intern.rental_acommodation.common.Constant;
 import com.jvb_intern.rental_acommodation.entity.Landlord;
 import com.jvb_intern.rental_acommodation.entity.Tenant;
 import com.jvb_intern.rental_acommodation.service.LandlordService;
@@ -49,12 +50,12 @@ public class ForgotPasswordController {
             tenantService.updateResetPasswordToken(token, email);
             String resetPasswordLink = getSiteURL(request) + "/reset-password?token=" + token;
             sendEmail(email, resetPasswordLink);
-            model.addAttribute("message", "Hệ thống đã gửi mail đặt lại mật khẩu cho bạn. Vui lòng kiểm tra hộp thư!");
+            model.addAttribute(Constant.MESSAGE, "Hệ thống đã gửi mail đặt lại mật khẩu cho bạn. Vui lòng kiểm tra hộp thư!");
         } else if (landlordService.existByEmail(email)) {
             landlordService.updateResetPasswordToken(token, email);
             String resetPasswordLink = getSiteURL(request) + "/reset-password?token=" + token;
             sendEmail(email, resetPasswordLink);
-            model.addAttribute("message", "Hệ thống đã gủi mail đặt lại mật khẩu cho bạn. Vui lòng kiểm tra hộp thư!");
+            model.addAttribute(Constant.MESSAGE, "Hệ thống đã gủi mail đặt lại mật khẩu cho bạn. Vui lòng kiểm tra hộp thư!");
         }
         return "forgot-password-form";
     }
@@ -86,20 +87,19 @@ public class ForgotPasswordController {
 
     @GetMapping("/reset-password")
     public String showResetPasswordForm(@Param(value = "token") String token, Model model) {
-        Tenant tenant = tenantService.findByResetPasswordToken(token);
         Landlord landlord = landlordService.findByResetPasswordToken(token);
-
         if (landlord != null) {
-            model.addAttribute("token", token);
+            model.addAttribute(Constant.TOKEN, token);
             return "reset-password-form";
         }
 
+        Tenant tenant = tenantService.findByResetPasswordToken(token);
         if (tenant != null) {
-            model.addAttribute("token", token);
+            model.addAttribute(Constant.TOKEN, token);
             return "reset-password-form";
         }
-
-        model.addAttribute("message", "Liên kết đã hết hạn hoặc tài khoản không tồn tại");
+        
+        model.addAttribute(Constant.MESSAGE, "Liên kết đã hết hạn hoặc tài khoản không tồn tại!");
         return "message";
     }
 
@@ -113,15 +113,15 @@ public class ForgotPasswordController {
         Landlord landlord = landlordService.findByResetPasswordToken(token);
 
         if (tenant == null && landlord == null) {
-            model.addAttribute("message", "Xác thực không hợp lệ!");
+            model.addAttribute(Constant.MESSAGE, "Xác thực không hợp lệ!");
             return "message";
         } else {
             if (tenant != null) {
                 tenantService.updatePassword(tenant, password);
-                model.addAttribute("message", "Đặt lại mật khẩu thành công");
+                model.addAttribute(Constant.MESSAGE, "Đặt lại mật khẩu thành công");
             } else {
                 landlordService.updatePassword(landlord, password);
-                model.addAttribute("message", "Đặt lại mật khẩu thành công");
+                model.addAttribute(Constant.MESSAGE, "Đặt lại mật khẩu thành công");
             }
         }
         return "message";
