@@ -13,12 +13,11 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 import com.jvb_intern.rental_acommodation.common.Constant;
-import com.jvb_intern.rental_acommodation.service.Impl.CustomerUserDetailServiceImpl;
+import com.jvb_intern.rental_acommodation.service.impl.CustomerUserDetailServiceImpl;
 
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
-
     @Autowired
     private CustomerUserDetailServiceImpl customerUserDetailService;
 
@@ -44,6 +43,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/home").permitAll()
                 .antMatchers("/register/**").permitAll()
                 .antMatchers("/rules").permitAll()
+                .antMatchers("/reset-password/**").permitAll()
                 .antMatchers("/forgot-password/**").permitAll()
                 .antMatchers("/tenant/**").hasAuthority(Constant.ROLE_TENANT)
                 .antMatchers("/landlord/**").hasAuthority(Constant.ROLE_LANDLORD)
@@ -76,7 +76,5 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(customerUserDetailService)
                 .passwordEncoder(passwordEncoder());
-
-        
     }
 }

@@ -21,7 +21,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @Table(name = "Tenant")
 
-public class Tenant{
+public class Tenant {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long tenantId;
@@ -35,7 +35,7 @@ public class Tenant{
     @Column(name = "phone", length = 20)
     private String phone;
 
-    @Column(nullable = false, name ="password")
+    @Column(nullable = false, name = "password")
     private String password;
 
     @Column(name = "role")
