@@ -9,7 +9,6 @@ import lombok.NoArgsConstructor;
  * Objective: Get data from screen the create post of landlord, 
  * Relation: 10-landlord-post.html
  */
-
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
@@ -39,4 +38,6 @@ public class ContentPostDto {
     private String wifi;
 
     private String conditioner;
+
+    private String tag;
 }

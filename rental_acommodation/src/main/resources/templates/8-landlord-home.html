@@ -6,6 +6,7 @@
     <meta name="description"
         content="Màn hình home người đăng bài">
     <title>Trang chủ | Người cho thuê</title>
+
     <!-- Font -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -48,7 +49,7 @@
 
                             <!-- Title -->
                             <div class="card-title mb-3">
-                                <a th:text="${#strings.length(post.title) > 51 ? #strings.substring(post.title, 0, 51) + '...' : post.title}"
+                                <a th:text="${#strings.length(post.title) > 30 ? #strings.substring(post.title, 0, 30) + '...' : post.title}"
                                     class="blockquote btn-link" th:href="@{/landlord/landlord-post-detail}"></a>
                             </div> 
 
@@ -77,7 +78,7 @@
                             </div>
                         </div>
                     </div>
-                    
+
                 </div>
                 <!-- End: danh sách bài đăng -->
                 
@@ -157,17 +158,19 @@
                             </label>
 
                             <!-- Thanh tìm kiếm -->
-                            <form class="searchbox searchbox--auto-expand searchbox--hide-btn input-group">
-                                <input id="header-search-input" class="searchbox__input form-control bg-transparent"
-                                    type="search" placeholder="Nhập từ khoá cần tìm kiếm . . ." aria-label="Tìm kiếm">
-                                <div class="searchbox__backdrop">
-                                    <button
-                                        class="searchbox__btn header__btn btn btn-icon rounded shadow-none border-0 btn-sm"
-                                        type="button" id="button-addon2">
-                                        <i class="demo-pli-magnifi-glass"></i>
-                                    </button>
-                                </div>
-                            </form>
+                            <form class="searchbox searchbox--auto-expand searchbox--hide-btn input-group"
+                            id="search-form">
+                            <input id="header-search-input" class="searchbox__input form-control bg-transparent"
+                                type="search" placeholder="Nhập từ khoá cần tìm kiếm . . ." aria-label="Tìm kiếm">
+                            <div class="searchbox__backdrop">
+                                <button
+                                    class="searchbox__btn header__btn btn btn-icon rounded shadow-none border-0 btn-sm"
+                                    type="button" id="button-addon2">
+                                    <i class="demo-pli-magnifi-glass"></i>
+                                </button>
+                            </div>
+                        </form>
+                        <!-- Thanh tìm kiếm -->
                         </div>
                     </div>
                     <!-- End - Content Header - Left Side -->
@@ -339,7 +342,7 @@
                             </li>
                             <!-- Category 2:  -->
                             <li class="nav-item has-sub">
-                                <a th:href="@{/landlord/landlord-info}" class="mininav-toggle nav-link collapse"><i
+                                <a href="#" class="mininav-toggle nav-link collapse"><i
                                         class="demo-pli-split-vertical-2 fs-5 me-2"></i>
                                     <span class="nav-label ms-1">Thông tin cá nhân</span>
                                 </a>
@@ -433,5 +436,7 @@
     <script th:src="@{/js/nifty.js}" defer></script>
     <script th:src="@{/js/demo-purpose-only.js}" defer></script>
     <script th:src="@{/js/validate-password.js}" defer> </script>
+    <script th:src="@{/js/search.js}" defer> </script>
+    <script th:src="@{/js/landlord-home.js}" defer> </script>
 </body>
 </html>

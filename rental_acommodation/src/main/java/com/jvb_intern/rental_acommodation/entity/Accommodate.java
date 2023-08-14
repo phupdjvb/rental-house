@@ -48,7 +48,10 @@ public class Accommodate {
     private String parking;
 
     @Column(name = "wifi")
-    private String wifi; // có hoặc không
+    private String wifi; // wifi hoặc null
+
+    @Column(name = "tag")
+    private String tag;
 
     @Column(name = "conditioner")
     private String conditioner;
