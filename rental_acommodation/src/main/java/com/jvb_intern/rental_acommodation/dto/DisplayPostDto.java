@@ -1,23 +1,18 @@
 package com.jvb_intern.rental_acommodation.dto;
 
-import org.springframework.web.multipart.MultipartFile;
-
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
-/*
- * Objective: Get data from screen the create post of landlord, 
- * Relation: 10-landlord-post.html
- */
-@NoArgsConstructor
-@AllArgsConstructor
+
 @Data
-public class ContentPostDto {
+public class DisplayPostDto {
+    private String email;
+
+    private String phone;
+
+    private String name;
+    
     private String title;
     
     private String content;
-
-    private MultipartFile photoFile;
 
     private String photo;
 
@@ -29,8 +24,6 @@ public class ContentPostDto {
 
     private Double square;
 
-    private String roomStatus;
-
     private String priceCategory;
 
     private String parking;
@@ -39,5 +32,4 @@ public class ContentPostDto {
 
     private String conditioner;
 
-    private String tag;
 }

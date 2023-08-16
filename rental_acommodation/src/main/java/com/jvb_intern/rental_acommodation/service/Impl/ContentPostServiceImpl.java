@@ -31,13 +31,14 @@ public class ContentPostServiceImpl implements ContentPostService {
         // get data of accommodate from newPostDto
         accommodate.setRoomPrice(newPostDto.getRoomPrice());
         accommodate.setAddress(newPostDto.getAddress());
-        accommodate.setArea(newPostDto.getArea());
         accommodate.setSquare(newPostDto.getSquare());
         accommodate.setRoomStatus(newPostDto.getRoomStatus());
         accommodate.setPriceCategory(newPostDto.getPriceCategory());
         accommodate.setWifi(newPostDto.getWifi());
         accommodate.setParking(newPostDto.getParking());
         accommodate.setConditioner(newPostDto.getConditioner());
+        accommodate.setArea(newPostDto.getArea());
+        accommodate.setTag(newPostDto.getTag());
 
         // Save relationship
         accommodate.setPost(savedPost);

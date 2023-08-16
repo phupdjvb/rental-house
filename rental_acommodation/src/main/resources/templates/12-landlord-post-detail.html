@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1">
+    <meta name="description" content="Chỉnh sửa thông tin cá nhân người cho thuê">
+    <title> Chi tiết bài đăng| Người cho thuê</title>
+
+    <!-- Font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;700&family=Ubuntu:wght@400;500;700&display=swap"
+        rel="stylesheet">
+
+    <!-- CSS -->
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{/css/nifty.min.css}">
+    <link rel="stylesheet" th:href="@{/css/demo-purpose/demo-icons.min.css}">
+    <link rel="stylesheet" th:href="@{/css/demo-purpose/demo-settings.min.css}">
+
+
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBDJsIB49Siez8CFBJaoghhy6lpjRj-lqc&callback=initMap"
+        async defer></script>
+    <script
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBDJsIB49Siez8CFBJaoghhy6lpjRj-lqc&callback=initMap&libraries=places"
+        async defer></script>
+
+    <script th:inline="javascript">
+        var map;
+        var directionsService;
+        var directionsRenderer;
+
+        function initMap() {
+            // Khởi tạo bản đồ
+            map = new google.maps.Map(document.getElementById('map'), {
+                zoom: 15 // Độ phóng bản đồ
+            });
+
+            directionsService = new google.maps.DirectionsService();// đối tượng gửi và nhận request chỉ đường
+            directionsRenderer = new google.maps.DirectionsRenderer({ map: map });// đối tượng render đường đi trên màn hình
+
+            // Sử dụng Geocoder để lấy thông tin địa chỉ từ văn bản địa chỉ
+            var geocoder = new google.maps.Geocoder();
+
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(function (position) {
+                    var userLocation = {
+                        lat: position.coords.latitude,
+                        lng: position.coords.longitude
+                    };
+
+                    map.setCenter(userLocation);
+
+                    // điểm xuất phát:
+                    var start = userLocation;
+
+                    // điểm kết thúc là vị trí của phòng trọ
+                    var address = /*[[ ${displayPostDto.address} ]]*/ '';
+
+                    // Sử dụng Geocoder để lấy thông tin toạ độ từ địa chỉ
+                    geocoder.geocode({ 'address': address }, function (results, status) {
+                    if (status === 'OK') {
+                        // Lấy vị trí từ kết quả Geocoder
+                        var location = results[0].geometry.location;
+
+                        // Đặt tọa độ cho bản đồ và thêm đánh dấu
+                        map.setCenter(location);
+                        var marker = new google.maps.Marker({
+                            map: map,
+                            position: location,
+                            title: address
+                        });
+                    } else {
+                        console.log('Không thể mã hóa địa chỉ: ' + status);
+                    }
+                    });
+
+                    // Lựa chọn chế dộ xem đường
+                    document.getElementById('drivingButton').addEventListener('click', function () {
+                        calculateAndDisplayRoute('DRIVING', start, address);
+                    });
+
+                    document.getElementById('walkingButton').addEventListener('click', function () {
+                        calculateAndDisplayRoute('WALKING', start, address);
+                    });
+
+                    document.getElementById('transitButton').addEventListener('click', function () {
+                        calculateAndDisplayRoute('TRANSIT', start, address);
+                    });
+                }, function () {
+                    alert("Không thể lấy được vị trí hiện tại của bạn");
+                });
+            } else {
+                alert("Trình duyệt của bạn không hỗ trợ dịch vụ của Google Map");
+            }
+        }
+        
+        // Hiển thị đường đi theo chế độ
+        function calculateAndDisplayRoute(travelMode, start, end) {
+            var request = {
+                origin: start,
+                destination: end,
+                travelMode: travelMode
+            }
+
+            directionsService.route(request, function (result, status) {
+                if (status = "OK") {
+                    directionsRenderer.setDirections(result);
+                }
+            });
+        }
+    </script>
+</head>
+
+<body class="jumping">
+    <!-- PAGE CONTAINER -->
+    <div id="root" class="root mn--max hd--expanded">
+        <!-- CONTENTS -->
+        <section id="content" class="content">
+            <div class="content__header content__boxed overlapping">
+                <div class="content__wrap">
+
+                    <!-- Breadcrumb -->
+                    <nav aria-label="breadcrumb">
+                        <ol class="breadcrumb mb-0">
+                            <li class="breadcrumb-item"><a href="#">Bài đăng</a></li>
+                            <li class="breadcrumb-item active" aria-current="page">Chi tiết bài đăng</li>
+                        </ol>
+                    </nav>
+                    <!-- END : Breadcrumb -->
+                    <br>
+                </div>
+            </div>
+            <!--Thông tin bài đăng -->
+            <div class="content__boxed content__wrap row col-md-12 mb-2">
+                <!-- card 1 -->
+                <div class="card col-md-12">
+                    <div class="card-body" th:object="${displayPostDto}">
+                        <!-- Ảnh và thông tin liên hệ -->
+                        <div class="row">
+                            <!-- Ảnh -->
+                            <div class="col-md-9">
+                                <div class="img-container mt-2"
+                                    style="max-width: 100%; height: 0; padding-bottom: 75%; position: relative;">
+                                    <img th:src="${displayPostDto.photo}" class="img-fluid"
+                                        style="position: absolute; object-fit: cover; width: 100%; height: 100%;">
+                                </div>
+                            </div>
+
+                            <!-- Thông tin liên hệ -->
+                            <div class="col-md-3">
+                                <p><b class="fs-5 text">Thông tin liên hệ</b></p>
+                                <p id="hidden-info-name" class="text-primary"><b th:text="${displayPostDto.name}"></b>
+                                </p>
+                                <p id="hidden-info-email" class="hidden"><b>Email: </b><span
+                                        th:text="${displayPostDto.email}"></span></p>
+                                <p id="hidden-info-phone" class="hidden"><b>SĐT: </b><span
+                                        th:text="${displayPostDto.phone}"></span></p>
+                            </div>
+                        </div>
+
+                        <!-- Tittle -->
+                        <hr class="my-2"> <!-- Gạch ngăn ngang -->
+                        <div class="row">
+                            <div>
+                                <p class="fs-2 text" th:text="*{title}"></p>
+                                <p><b class="text-primary">Địa chỉ: </b><span class="text-primary"
+                                        th:text="${displayPostDto.address}"></span></p>
+                            </div>
+                        </div>
+
+                        <!-- Giá và danh mục giá, loại phòng -->
+                        <hr class="my-2">
+                        <div class="row align-items-center">
+                            <div class="col-md-4">
+                                <p><b>Giá: </b><span th:text="${displayPostDto.roomPrice}"></span>Triệu đồng/tháng</p>
+                            </div>
+                            <div class="col-md-4">
+                                <p><b>Diện tích: </b><span th:text="${displayPostDto.square}"></span>m2 </p>
+                            </div>
+                            <div class="col-md-4">
+                                <p><b>Loại phòng: </b><span th:text="${displayPostDto.priceCategory}"></span></p>
+                            </div>
+                        </div>
+
+                        <!-- Mô tả chi tiết -->
+                        <hr class="my-2">
+                        <div class="row">
+                            <div class="mt-3">
+                                <p><b class="fs-5 text">Thông tin mô tả</b></p>
+                                <p th:utext="${displayPostDto.content}"></p>
+                            </div>
+                        </div>
+                        <!-- Tiện ích đi kèm -->
+                        <hr class="my-2">
+                        <div class="row">
+                            <div class="mt-3">
+                                <p><b class="fs-5 text">Tiện ích</b></p>
+                                <p th:text="${displayPostDto.wifi}"></p>
+                                <p th:text="${displayPostDto.parking}"></p>
+                                <p th:text="${displayPostDto.conditioner}"></p>
+                            </div>
+                        </div>
+
+                        <!-- Vị trí trên bản đồ -->
+                        <hr class="my-2">
+                        <div class="row">
+                            <div class="mt-3">
+                                <p><b class="fs-5 text">Vị trí trên đồ</b></p>
+                                <p class="blockquote">Lựa chọn chế độ xem phù hợp với bạn!</p>
+                                <!-- Chế độ xem -->
+                                <button id="drivingButton" class="btn btn-primary btn-lg">Lái xe</button>
+                                <button id="transitButton" class="btn btn-primary btn-lg">Phương tiện công cộng</button>
+                                <button id="walkingButton" class="btn btn-primary btn-lg">Đi bộ</button>
+                                <div id="map" style="height: 400px;"></div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- card 2 -->
+            </div>
+            <div th:replace="fragments :: footer"></div>
+        </section>
+        <!-- Start: Header -->
+        <div th:replace="fragments :: header"></div>
+
+        <!-- Thanh điều hướng -->
+        <nav id="mainnav-container" class="mainnav">
+            <div class="mainnav__inner">
+                <!-- Start: Nevigation -->
+                <div class="mainnav__top-content scrollable-content pb-5">
+                    <!--Start: Avatar -->
+                    <div class="mainnav__profile mt-3 d-flex3">
+                        <!-- Profile picture  -->
+                        <div class="mininav-toggle text-center py-2">
+                            <img class="mainnav__avatar img-md rounded-circle border" src="/img/profile-photos/1.png"
+                                alt="Profile Picture">
+                        </div>
+
+                        <div class="mininav-content collapse d-mn-max">
+                            <div class="d-grid">
+                                <!-- User name and position -->
+                                <button class="d-block btn shadow-none p-2" data-bs-toggle="collapse"
+                                    data-bs-target="#usernav" aria-expanded="false" aria-controls="usernav">
+                                    <span class="d-flex justify-content-center align-items-center">
+                                        <h6 class="mb-0 me-3">Tên tài khoản</h6>
+                                    </span>
+                                    <small class="text-muted">Tài khoản đăng bài</small>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- End: Avatar-->
+
+                    <!-- Start: Left Navigation Category -->
+                    <div class="mainnav__categoriy py-3">
+                        <h6 class="mainnav__caption mt-0 px-3 fw-bold">Tuỳ chọn</h6>
+                        <ul class="mainnav__menu nav flex-column">
+                            <!-- Category: 1 -->
+                            <li class="nav-item">
+                                <a th:href=@{/landlord/landlord-home} class="mininav-toggle nav-link collapse"><i
+                                        class="demo-pli-home fs-5 me-2"></i>
+                                    <span class="nav-label mininav-content ms-1">Trang chủ</span>
+                                </a>
+                            </li>
+                            <!-- Category 2:  -->
+                            <li class="nav-item has-sub">
+                                <a href="#" class="mininav-toggle nav-link collapse"><i
+                                        class="demo-pli-split-vertical-2 fs-5 me-2"></i>
+                                    <span class="nav-label ms-1">Thông tin cá nhân</span>
+                                </a>
+                                <!-- Forms submenu list -->
+                                <ul class="mininav-content nav collapse">
+                                    <li class="nav-item">
+                                        <a th:href=@{/landlord/landlord-info} class="nav-link">Chi tiết tài khoản</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a th:href=@{/landlord/landlord-edit-info} class="nav-link">Chỉnh sửa thông
+                                            tin</a>
+                                    </li>
+                                </ul>
+                                <!-- END : Forms submenu list -->
+                            </li>
+                            <!-- Category 3: Bài đăng-->
+                            <li class="nav-item has-sub">
+                                <a href="#" class="mininav-toggle nav-link collapse"><i
+                                        class="demo-pli-split-vertical-2 fs-5 me-2"></i>
+                                    <span class="nav-label ms-1">Bài đăng</span>
+                                </a>
+                                <!-- Layouts submenu list -->
+                                <ul class="mininav-content nav collapse">
+                                    <li class="nav-item">
+                                        <a th:href=@{/landlord/landlord-post} class="nav-link">Tạo bài đăng</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a th:href=@{/landlord/landlord-posted} class="nav-link">Bài viết đã
+                                            đăng</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a th:href=@{/landlord/landlord-list-post} class="nav-link">Bài đăng mới
+                                            nhất</a>
+                                    </li>
+                                </ul>
+                            </li>
+
+                            <!-- Category 4: Lịch hẹn -->
+                            <li class="nav-item has-sub">
+                                <a href="#" class="mininav-toggle nav-link collapsed"><i
+                                        class="demo-pli-speech-bubble-5 fs-5 me-2"></i>
+                                    <span class="nav-label ms-1">Lịch hẹn</span>
+                                </a>
+
+                                <!-- Blog Apps submenu list -->
+                                <ul class="mininav-content nav collapse">
+                                    <li class="nav-item">
+                                        <a th:href=@{/landlord/landlord-date} class="nav-link">Lịch hẹn xem phòng</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a th:href=@{/landlord/landlord-queue} class="nav-link">Lịch hẹn chờ xác
+                                            nhận</a>
+                                    </li>
+                                </ul>
+                                <!-- END : Blog Apps submenu list -->
+
+                            </li>
+
+                            <!-- Category 5: Cài đặt -->
+                            <li class="nav-item">
+                                <a th:href=@{/widgets} class="nav-link mininav-toggle"><i
+                                        class="demo-pli-gear fs-5 me-2"></i>
+                                    <span class="nav-label mininav-content ms-1">Cài đặt</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                    <!-- End: Left Nevigation Category-->
+
+                    <!-- Bottom navigation menu -->
+                    <div class="mainnav__bottom-content border-top pb-2">
+                        <ul id="mainnav" class="mainnav__menu nav flex-column">
+                            <li class="nav-item has-sub">
+                                <a th:href=@{/logout} class="nav-link mininav-toggle collapsed" aria-expanded="false">
+                                    <i class="demo-pli-unlock fs-5 me-2"></i>
+                                    <span class="nav-label ms-1">Đăng xuất</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                    <!-- End - Bottom navigation menu -->
+                </div>
+            </div>
+        </nav>
+    </div>
+    <!-- End: Thanh điều hướng -->
+    <script th:src="@{/vendors/popperjs/popper.min.js}" defer></script>
+    <script th:src="@{/vendors/bootstrap/bootstrap.min.js}" defer></script>
+    <script th:src="@{/js/nifty.js}" defer></script>
+    <script th:src="@{/js/demo-purpose-only.js}" defer></script>
+    <script th:src="@{/js/validate-password.js}" defer> </script>
+    <script th:src="@{/js/search.js}" defer> </script>
+    <script th:src="@{/js/notification.js}" defer> </script>
+
+</body>
+
+</html>

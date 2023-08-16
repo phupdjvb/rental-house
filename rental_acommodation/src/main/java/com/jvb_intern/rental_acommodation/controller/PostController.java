@@ -35,7 +35,7 @@ public class PostController {
     }
 
     // MH: 10-landlord-post.html
-    @PostMapping("landlord/landlord-post")
+    @PostMapping("/landlord/landlord-post")
     public String savePost(@ModelAttribute("newPostDto") ContentPostDto newPostDto, Principal principal) throws IOException {
         MultipartFile uploadedFile = newPostDto.getPhotoFile();
 
