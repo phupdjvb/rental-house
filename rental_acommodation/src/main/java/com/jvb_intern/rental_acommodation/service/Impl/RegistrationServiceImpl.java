@@ -48,7 +48,7 @@ public class RegistrationServiceImpl implements RegistrationService {
     public Boolean checkExistedRole(RegistrationDto registrationDto, String role) {
         String inputEmail = registrationDto.getEmail();
 
-        // ếu đăng ký vai trò tenat
+        // nếu đăng ký vai trò tenat
         if  (role.equals(Constant.ROLE_TENANT)) {
             Tenant tenant = tenantRepository.findByTenantEmail(inputEmail);
             return (tenant != null);

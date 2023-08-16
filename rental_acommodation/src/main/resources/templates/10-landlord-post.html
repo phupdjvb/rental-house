@@ -64,20 +64,22 @@
                             <!-- Input title -->
                             <div class="col-md-12">
                                 <label for="title" class="form-label"><b>Tiêu đề bài đăng</b></label>
-                                <input type="text" class="form-control" name="title" id="title" th:field="*{title}">
+                                <input type="text" class="form-control" name="title" id="title" th:field="*{title}" required>
+                                <span class = "lead" id = "title-error" style="color: #003366;"></span>
                             </div>
 
                             <!-- Input địa chỉ -->
                             <div class="col-md-12">
                                 <label for="address" class="form-label"><b>Địa chỉ</b></label>
-                                <input type="text" class="form-control" name="address" id="address" th:field=*{address}>
+                                <input type="text" class="form-control" name="address" id="address" th:field=*{address} required>
+                                <span class = "lead" id = "address-error" style="color: #003366;"></span>
                             </div>
 
                             <!-- Input: Loại phòng -->
                             <div class="col-md-6 mt-4">
                                 <label for="price_category"><b>Loại phòng</b></label>
                                 <select class="form-control" name="priceCategory" id="price_category"
-                                    th:field="*{priceCategory}">
+                                    th:field="*{priceCategory}" required>
                                     <option value="Giá rẻ">Giá rẻ</option>
                                     <option value="Homestay">Homestay</option>
                                     <option value="Chung cư mini">Chung cư mini</option>
@@ -87,7 +89,7 @@
                             <!-- Input: khu vực -->
                             <div class="col-md-6 mt-4">
                                 <label for="area"><b>Khu vực</b></label>
-                                <select class="form-control" name="area" id="area" th:field="*{area}">
+                                <select class="form-control" name="area" id="area" th:field="*{area}" required>
                                     <option value="Khác">Tuỳ chọn</option>
                                     <option value="Quận Ba Đình">Quận Ba Đình</option>
                                     <option value="Quận Bắc Từ Liêm">Quận Bắc Từ Liêm</option>
@@ -101,6 +103,8 @@
                                     <option value="Quận Thanh Xuân">Quận Thanh Xuân</option>
                                     <option value="Quận Tây Hồ">Quận Tây Hồ</option>
                                 </select>
+                                <!-- Gán nhãn -->
+                                <input type="hidden" name = "tag" id = "tag" th:field = "*{tag}">
                             </div>
 
                             <!-- Input: Giá phòng -->
@@ -120,16 +124,16 @@
                             <!-- Checkbox: Tiện ích -->
                             <label><b>Tiện ích</b></label><br>
                             <div class="col-md-6">
-                                <input type="checkbox" id="wifiCheckbox" name="wifi" value="Có" th:field="*{wifi}">
+                                <input type="checkbox" id="wifiCheckbox" name="wifi" value="Wifi" th:field="*{wifi}">
                                 <label for="wifiCheckbox">Wifi</label><br>
 
-                                <input type="checkbox" id="parkingCheckbox" name="parking" value="Có"
+                                <input type="checkbox" id="parkingCheckbox" name="parking" value="Bãi đỗ xe"
                                     th:field="*{parking}">
                                 <label for="parkingCheckbox">Bãi đỗ xe</label><br>
                             </div>
 
                             <div class="col-md-6">
-                                <input type="checkbox" id="conditionerCheckbox" name="conditioner" value="Có"
+                                <input type="checkbox" id="conditionerCheckbox" name="conditioner" value="Điều hoà"
                                     th:field="*{conditioner}">
                                 <label for="conditionerCheckbox">Điều hoà</label><br>
 
@@ -179,6 +183,7 @@
             <!-- End: Content -->
 
             <!-- FOOTER -->
+            
             <footer class="mt-auto">
                 <div class="content__boxed">
                     <div class="content__wrap py-3 py-md-1 d-flex flex-column flex-md-row align-items-md-center">
@@ -233,9 +238,12 @@
                             </label>
 
                             <!-- Thanh tìm kiếm -->
-                            <form class="searchbox searchbox--auto-expand searchbox--hide-btn input-group">
-                                <input id="header-search-input" class="searchbox__input form-control bg-transparent"
-                                    type="search" placeholder="Nhập từ khoá cần tìm kiếm . . ." aria-label="Tìm kiếm">
+                            <form class="searchbox searchbox--auto-expand searchbox--hide-btn input-group" id = "search-form">
+                                <input  id="header-search-input" 
+                                        class="searchbox__input form-control bg-transparent"
+                                        type="search" 
+                                        placeholder="Nhập từ khoá cần tìm kiếm . . ." 
+                                        aria-label="Tìm kiếm">
                                 <div class="searchbox__backdrop">
                                     <button
                                         class="searchbox__btn header__btn btn btn-icon rounded shadow-none border-0 btn-sm"
@@ -438,13 +446,13 @@
                                 <!-- Layouts submenu list -->
                                 <ul class="mininav-content nav collapse">
                                     <li class="nav-item">
-                                        <a th:href=@{/landlord-post} class="nav-link active">Tạo bài đăng</a>
+                                        <a th:href=@{/landlord/landlord-post} class="nav-link active">Tạo bài đăng</a>
                                     </li>
                                     <li class="nav-item">
-                                        <a th:href=@{/landlord-posted} class="nav-link">Bài viết đã đăng</a>
+                                        <a th:href=@{/landlord/landlord-posted} class="nav-link">Bài viết đã đăng</a>
                                     </li>
                                     <li class="nav-item">
-                                        <a th:href=@{/landlord-list-post} class="nav-link">Bài đăng mới nhất</a>
+                                        <a th:href=@{/landlord/landlord-list-post} class="nav-link">Bài đăng mới nhất</a>
                                     </li>
                                 </ul>
                             </li>
@@ -459,10 +467,10 @@
                                 <!-- Blog Apps submenu list -->
                                 <ul class="mininav-content nav collapse">
                                     <li class="nav-item">
-                                        <a th:href=@{/landlord-date} class="nav-link">Lịch hẹn xem phòng</a>
+                                        <a th:href=@{/landlord/landlord-date} class="nav-link">Lịch hẹn xem phòng</a>
                                     </li>
                                     <li class="nav-item">
-                                        <a th:href=@{/landlord-queue} class="nav-link">Lịch hẹn chờ xác nhận</a>
+                                        <a th:href=@{/landlord/landlord-queue} class="nav-link">Lịch hẹn chờ xác nhận</a>
                                     </li>
                                 </ul>
                                 <!-- END : Blog Apps submenu list -->
@@ -504,10 +512,12 @@
     <!-- End button chuyên lên đầu trang -->
 
     <!-- End: Thanh điều hướng -->
-    <script src="/vendors/popperjs/popper.min.js" defer></script>
-    <script src="/vendors/bootstrap/bootstrap.min.js" defer></script>
-    <script src="/js/nifty.js" defer></script>
-    <script src="/js/demo-purpose-only.js" defer></script>
+    <script th:src="@{/vendors/popperjs/popper.min.js}" defer></script>
+    <script th:src="@{/vendors/bootstrap/bootstrap.min.js}" defer></script>
+    <script th:src="@{/js/nifty.js}" defer></script>
+    <script th:src="@{/js/demo-purpose-only.js}" defer></script>
+    <script th:src="@{/js/search.js}" defer> </script>
+    <script th:src="@{/js/landlord-post.js}" defer> </script>
 </body>
 
 </html>
