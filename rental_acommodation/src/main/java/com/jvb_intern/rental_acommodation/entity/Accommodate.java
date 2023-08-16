@@ -56,7 +56,7 @@ public class Accommodate {
     @Column(name = "conditioner")
     private String conditioner;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "landlord_id")
     private Landlord landlord;
 

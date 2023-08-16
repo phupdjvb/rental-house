@@ -183,6 +183,7 @@
             <!-- End: Content -->
 
             <!-- FOOTER -->
+            
             <footer class="mt-auto">
                 <div class="content__boxed">
                     <div class="content__wrap py-3 py-md-1 d-flex flex-column flex-md-row align-items-md-center">
@@ -445,13 +446,13 @@
                                 <!-- Layouts submenu list -->
                                 <ul class="mininav-content nav collapse">
                                     <li class="nav-item">
-                                        <a th:href=@{/landlord-post} class="nav-link active">Tạo bài đăng</a>
+                                        <a th:href=@{/landlord/landlord-post} class="nav-link active">Tạo bài đăng</a>
                                     </li>
                                     <li class="nav-item">
-                                        <a th:href=@{/landlord-posted} class="nav-link">Bài viết đã đăng</a>
+                                        <a th:href=@{/landlord/landlord-posted} class="nav-link">Bài viết đã đăng</a>
                                     </li>
                                     <li class="nav-item">
-                                        <a th:href=@{/landlord-list-post} class="nav-link">Bài đăng mới nhất</a>
+                                        <a th:href=@{/landlord/landlord-list-post} class="nav-link">Bài đăng mới nhất</a>
                                     </li>
                                 </ul>
                             </li>
@@ -466,10 +467,10 @@
                                 <!-- Blog Apps submenu list -->
                                 <ul class="mininav-content nav collapse">
                                     <li class="nav-item">
-                                        <a th:href=@{/landlord-date} class="nav-link">Lịch hẹn xem phòng</a>
+                                        <a th:href=@{/landlord/landlord-date} class="nav-link">Lịch hẹn xem phòng</a>
                                     </li>
                                     <li class="nav-item">
-                                        <a th:href=@{/landlord-queue} class="nav-link">Lịch hẹn chờ xác nhận</a>
+                                        <a th:href=@{/landlord/landlord-queue} class="nav-link">Lịch hẹn chờ xác nhận</a>
                                     </li>
                                 </ul>
                                 <!-- END : Blog Apps submenu list -->
@@ -512,9 +513,9 @@
 
     <!-- End: Thanh điều hướng -->
     <script th:src="@{/vendors/popperjs/popper.min.js}" defer></script>
-    <script src="@{/vendors/bootstrap/bootstrap.min.js}" defer></script>
-    <script src="@{/js/nifty.js}" defer></script>
-    <script src="@{/js/demo-purpose-only.js}" defer></script>
+    <script th:src="@{/vendors/bootstrap/bootstrap.min.js}" defer></script>
+    <script th:src="@{/js/nifty.js}" defer></script>
+    <script th:src="@{/js/demo-purpose-only.js}" defer></script>
     <script th:src="@{/js/search.js}" defer> </script>
     <script th:src="@{/js/landlord-post.js}" defer> </script>
 </body>
