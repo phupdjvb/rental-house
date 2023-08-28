@@ -5,6 +5,7 @@ import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -53,11 +54,11 @@ public class Tenant {
     @OneToMany(mappedBy = "tenant", cascade = CascadeType.ALL)
     private List<NotificationDating> notificationDating;
 
-    @OneToMany(mappedBy = "tenant", cascade = CascadeType.ALL)
-    private List<TenantDating> tenantDating;
+    @OneToMany(mappedBy = "tenant", cascade = CascadeType.ALL,fetch = FetchType.EAGER)
+    private List<TenantDating> tenantDatings;
 
     @OneToMany(mappedBy = "tenant", cascade = CascadeType.ALL)
-    private List<LandlordDating> landlordDating;
+    private List<LandlordDating> landlordDatings;
 
     @OneToOne(mappedBy = "tenant")
     private TenantCriteria tenantCriteria;

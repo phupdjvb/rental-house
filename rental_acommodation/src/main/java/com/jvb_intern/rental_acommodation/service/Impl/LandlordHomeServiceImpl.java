@@ -1,6 +1,7 @@
 package com.jvb_intern.rental_acommodation.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -12,6 +13,7 @@ import com.jvb_intern.rental_acommodation.entity.Landlord;
 import com.jvb_intern.rental_acommodation.entity.Post;
 import com.jvb_intern.rental_acommodation.repository.LandlordRepository;
 import com.jvb_intern.rental_acommodation.repository.PostRepository;
+import com.jvb_intern.rental_acommodation.service.HomeService;
 import com.jvb_intern.rental_acommodation.service.LandlordHomeService;
 
 @Service
@@ -25,34 +27,27 @@ public class LandlordHomeServiceImpl implements LandlordHomeService {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
+    @Autowired
+    private final HomeService homeService;
+    LandlordHomeServiceImpl(@Qualifier("homeServiceImpl") HomeService homeService) {
+        this.homeService = homeService;
+    }
+   
     @Override
     public Page<Post> listPost(Pageable pageable) {
-        return postRepository.findAll(pageable);
+        return homeService.listPost(pageable);
     }
 
-    // Search bài đăng theo keyword
+    // // Search bài đăng theo keyword
     @Override
     public Page<Post> searchPost(String keyword, Pageable pageable) {
-        keyword = keyword.toLowerCase();
-        String[] mainKeyword = {"rẻ", "khép kín", "hiện đại", "ở ngay", 
-                                "ở luôn", "trung tâm", "công nghệ", "sư phạm", 
-                                "ngoại ngữ", "hust", "hus", "neu", "khoa học tự nhiên", 
-                                "thuỷ lợi", "bách khoa", "phát triển", "hiện đại", 
-                                "phố cổ", "tháp rùa", "hồ tây", "nhân văn", 
-                                "hoàng thành", "lăng bác", "ngân hàng", "wifi", "điều hoà", "nóng lạnh", "bãi đỗ xe"};
-
-        for (String word : mainKeyword) {
-            if(keyword.contains(word)) {
-                keyword = word;
-            }
-        }
-        return postRepository.findPostByKeyword(keyword, pageable);
+        return homeService.searchPost(keyword, pageable);
     }
 
-    // Search bài đăng theo email
+    // // Search bài đăng theo email
     @Override
     public Page<Post> searchPostByEmail(String email, Pageable pageable) {
-        return postRepository.findPostByEmail(email, pageable);
+        return homeService.searchPostByEmail(email, pageable);
     }
 
     // Sửa thông tin cá nhân của người dùng có tài khoản là email
@@ -90,6 +85,7 @@ public class LandlordHomeServiceImpl implements LandlordHomeService {
         Post post = postRepository.findByPostId(Id);
 
         DisplayPostDto displayPostDto = new DisplayPostDto();
+        displayPostDto.setPostId(post.getPostId());
         displayPostDto.setTitle(post.getTitle());
         displayPostDto.setContent(post.getContent());
         displayPostDto.setPhoto(post.getPhoto());
@@ -104,6 +100,9 @@ public class LandlordHomeServiceImpl implements LandlordHomeService {
         displayPostDto.setRoomPrice(post.getAccommodate().getRoomPrice());
         displayPostDto.setEmail(post.getLandlord().getLandlordEmail());
         displayPostDto.setName(post.getLandlord().getName());
+        displayPostDto.setLandlord(post.getLandlord());
+        displayPostDto.setRoomStatus(post.getAccommodate().getRoomStatus());
+        displayPostDto.setIsDeleted(post.getIsDeleted());
 
         return displayPostDto;
     }

@@ -29,7 +29,7 @@ public class ContentPostDto {
 
     private Double square;
 
-    private String roomStatus;
+    private Boolean roomStatus;
 
     private String priceCategory;
 

@@ -8,16 +8,14 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import com.jvb_intern.rental_acommodation.entity.Post;
-import java.util.List;
-
 
 @Repository
 public interface PostRepository extends JpaRepository<Post, Long> {
     Page<Post> findAll(Pageable pageable);
 
     // Tìm kiếm bài đăng
-    @Query("SELECT DISTINCT p FROM Post p" +
-            " INNER JOIN p.accommodate a" +
+    @Query("SELECT p FROM Post p" +
+            " JOIN p.accommodate a" +
             " WHERE (LOWER(p.title) LIKE %:keyword%)" +
             " OR (LOWER(a.priceCategory) LIKE %:keyword% OR LOWER(a.tag) LIKE %:keyword%)" +
             " OR (LOWER(a.address) LIKE %:keyword% OR LOWER(a.area) LIKE %:keyword%)" +
@@ -26,11 +24,19 @@ public interface PostRepository extends JpaRepository<Post, Long> {
     Page<Post> findPostByKeyword(@Param("keyword") String keyword, Pageable pageable);
 
     // Truy vấn bài đăng theo email của landlord
-    @Query("SELECT p FROM Post p" + 
-        " INNER JOIN p.landlord l" +
-        " WHERE l.landlordEmail = ?1")
+    @Query("SELECT p FROM Post p" +
+            " INNER JOIN p.landlord l" +
+            " WHERE l.landlordEmail = ?1")
     Page<Post> findPostByEmail(String email, Pageable pageable);
 
     // Tìm post thông qua ID
     Post findByPostId(Long postId);
+
+    // Tìm trong content
+    @Query("SELECT p FROM Post p" +
+            " JOIN p.accommodate a" +
+            " WHERE (LOWER(p.content) LIKE %:keyword%)")
+    Page<Post> findPostByContent(@Param("keyword") String keyword, Pageable pageable);
+
+
 }

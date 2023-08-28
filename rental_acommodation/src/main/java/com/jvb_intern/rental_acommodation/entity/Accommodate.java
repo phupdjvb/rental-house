@@ -39,7 +39,7 @@ public class Accommodate {
     private Double square;
 
     @Column(name = "room_status")
-    private String roomStatus;
+    private Boolean roomStatus;
 
     @Column(name = "price_category")
     private String priceCategory;
@@ -60,7 +60,7 @@ public class Accommodate {
     @JoinColumn(name = "landlord_id")
     private Landlord landlord;
 
-    @OneToOne(cascade = CascadeType.PERSIST)
+    @OneToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name = "post_id")
     private Post post;
 }

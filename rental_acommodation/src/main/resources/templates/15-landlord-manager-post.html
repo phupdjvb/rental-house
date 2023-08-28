@@ -1,0 +1,616 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1">
+    <meta name="description" content="Chỉnh sửa thông tin cá nhân người cho thuê">
+    <title> Quản lý bài đăng| Người cho thuê</title>
+
+    <!-- Font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;700&family=Ubuntu:wght@400;500;700&display=swap"
+        rel="stylesheet">
+
+    <!-- CSS -->
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{/css/nifty.min.css}">
+    <link rel="stylesheet" th:href="@{/css/demo-purpose/demo-icons.min.css}">
+    <link rel="stylesheet" th:href="@{/css/demo-purpose/demo-settings.min.css}">
+
+
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBDJsIB49Siez8CFBJaoghhy6lpjRj-lqc&callback=initMap"
+        async defer></script>
+    <script
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBDJsIB49Siez8CFBJaoghhy6lpjRj-lqc&callback=initMap&libraries=places"
+        async defer></script>
+
+    <!-- Text editor -->
+    <script src="https://cdn.tiny.cloud/1/gfrpd2xk27xmmrc57vy15k0f627fwsadpxbs0jvxdlhi15q2/tinymce/5/tinymce.min.js"
+        referrerpolicy="origin"></script>
+
+    <script th:inline="javascript">
+        var map;
+        var directionsService;
+        var directionsRenderer;
+
+        function initMap() {
+            // Khởi tạo bản đồ
+            map = new google.maps.Map(document.getElementById('map'), {
+                zoom: 15 // Độ phóng bản đồ
+            });
+
+            directionsService = new google.maps.DirectionsService();// đối tượng gửi và nhận request chỉ đường
+            directionsRenderer = new google.maps.DirectionsRenderer({ map: map });// đối tượng render đường đi trên màn hình
+
+            // Sử dụng Geocoder để lấy thông tin địa chỉ từ văn bản địa chỉ
+            var geocoder = new google.maps.Geocoder();
+
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(function (position) {
+                    var userLocation = {
+                        lat: position.coords.latitude,
+                        lng: position.coords.longitude
+                    };
+
+                    map.setCenter(userLocation);
+
+                    // điểm xuất phát:
+                    var start = userLocation;
+
+                    // điểm kết thúc là vị trí của phòng trọ
+                    var address = /*[[ ${post.address} ]]*/ '';
+
+                    // Sử dụng Geocoder để lấy thông tin toạ độ từ địa chỉ
+                    geocoder.geocode({ 'address': address }, function (results, status) {
+                        if (status === 'OK') {
+                            // Lấy vị trí từ kết quả Geocoder
+                            var location = results[0].geometry.location;
+
+                            // Đặt tọa độ cho bản đồ và thêm đánh dấu
+                            map.setCenter(location);
+                            var marker = new google.maps.Marker({
+                                map: map,
+                                position: location,
+                                title: address
+                            });
+                        } else {
+                            console.log('Không thể mã hóa địa chỉ: ' + status);
+                        }
+                    });
+
+                    // Lựa chọn chế dộ xem đường
+                    document.getElementById('drivingButton').addEventListener('click', function () {
+                        calculateAndDisplayRoute('DRIVING', start, address);
+                    });
+
+                    document.getElementById('walkingButton').addEventListener('click', function () {
+                        calculateAndDisplayRoute('WALKING', start, address);
+                    });
+
+                    document.getElementById('transitButton').addEventListener('click', function () {
+                        calculateAndDisplayRoute('TRANSIT', start, address);
+                    });
+                }, function () {
+                    alert("Không thể lấy được vị trí hiện tại của bạn");
+                });
+            } else {
+                alert("Trình duyệt của bạn không hỗ trợ dịch vụ của Google Map");
+            }
+        }
+
+        // Hiển thị đường đi theo chế độ
+        function calculateAndDisplayRoute(travelMode, start, end) {
+            var request = {
+                origin: start,
+                destination: end,
+                travelMode: travelMode
+            }
+
+            directionsService.route(request, function (result, status) {
+                if (status = "OK") {
+                    directionsRenderer.setDirections(result);
+                }
+            });
+        }
+    </script>
+</head>
+
+<body class="jumping">
+    <!-- PAGE CONTAINER -->
+    <div id="root" class="root mn--max hd--expanded">
+        <!-- CONTENTS -->
+        <section id="content" class="content">
+            <div class="content__header content__boxed overlapping">
+                <div class="content__wrap">
+
+                    <!-- Breadcrumb -->
+                    <nav aria-label="breadcrumb">
+                        <ol class="breadcrumb mb-0">
+                            <li class="breadcrumb-item"><a href="#">Bài đăng</a></li>
+                            <li class="breadcrumb-item active" aria-current="page">Chi tiết bài đăng</li>
+                        </ol>
+                    </nav>
+                    <!-- END : Breadcrumb -->
+                    <br>
+                </div>
+            </div>
+
+            <!-- Start content -->
+            <div class="content__boxed content__wrap row col-md-12 mb-2">
+
+                <!-- Thông báo -->
+                <div class="row">
+                    <!-- Huỷ lịch thành công -->
+                    <div th:if="${param.deleted}">
+                        <div class="alert alert-warning" id="successAlert">Xoá bài đăng thành công!</div>
+                    </div>
+
+                    <!-- Đăng lại thành công -->
+                    <div th:if="${param.reposted}">
+                        <div class="alert alert-info" id="successAlert">Đăng lại thành công!</div>
+                    </div>
+
+
+                    <!-- Cập nhật bài đăng thành công -->
+                    <div th:if="${param.updateSuccess}">
+                        <div class="alert alert-success" id="successAlert">Cập nhật bài đăng thành công!</div>
+                    </div>
+                </div>
+                <div class="card col-md-12">
+                    <div class="card-body">
+                        <!-- Tab base -->
+                        <div class="tab-base">
+                            <!-- Nav tabs -->
+                            <ul class="nav nav-tabs justify-content-end" role="tablist">
+                                <li class="nav-item" role="presentation">
+                                    <button class="nav-link active" data-bs-toggle="tab"
+                                        data-bs-target="#_dm-tabsRevHome" type="button" role="tab" aria-controls="home"
+                                        aria-selected="true">Chi tiết bài đăng</button>
+                                </li>
+
+                                <li class="nav-item" role="presentation">
+                                    <button class="nav-link" data-bs-toggle="tab" data-bs-target="#_dm-tabsRevProfile"
+                                        type="button" role="tab" aria-controls="profile" aria-selected="false">Chỉnh
+                                        sửa</button>
+                                </li>
+                            </ul>
+
+                            <!-- Tabs content -->
+                            <div class="tab-content">
+                                
+                                <!-- Tab 1: Chi tiết bài đăng-->
+                                <div id="_dm-tabsRevHome" class="tab-pane fade show active" role="tabpanel"
+                                    aria-labelledby="home-tab">
+                                    <!-- Lịch hẹn chờ xác nhận -->
+                                    <div class="col-md-12">
+                                        <div th:object="${post}">
+                                            <!-- Nếu chưa bị xoá -->
+                                            <!-- Ảnh và thông tin liên hệ -->
+                                            <div class="row">
+                                                <!-- Nếu đã bị xoá -->
+                                                <div>
+                                                    <div th:if="${post.isDeleted == true}">
+                                                        <p class="text-warning fs-5 text-center">Bài đăng này đã bị xoá
+                                                        </p>
+                                                    </div>
+                                                </div>
+
+                                                <!-- Ảnh -->
+                                                <div class="col-md-9">
+                                                    <div class="img-container mt-2"
+                                                        style="max-width: 100%; height: 0; padding-bottom: 75%; position: relative;">
+                                                        <img th:src="${post.photo}" class="img-fluid"
+                                                            style="position: absolute; object-fit: cover; width: 100%; height: 100%;">
+                                                    </div>
+                                                </div>
+
+                                                <!-- Thông tin liên hệ -->
+                                                <div class="col-md-3">
+                                                    <p><b class="fs-5 text">Thông tin liên hệ</b></p>
+                                                    <p id="hidden-info-name" class="text-primary"><b
+                                                            th:text="${post.name}"></b>
+                                                    </p>
+                                                    <p id="hidden-info-email" class="hidden"><b>Email: </b><span
+                                                            th:text="${post.email}"></span></p>
+                                                    <p id="hidden-info-phone" class="hidden"><b>SĐT: </b><span
+                                                            th:text="${post.phone}"></span></p>
+                                                </div>
+                                            </div>
+
+                                            <!-- Tittle -->
+                                            <hr class="my-2"> <!-- Gạch ngăn ngang -->
+                                            <div class="row">
+                                                <div>
+                                                    <p class="fs-2 text" th:text="*{title}"></p>
+                                                    <p><b class="text-primary">Địa chỉ: </b><span class="text-primary"
+                                                            th:text="${post.address}"></span>
+                                                    </p>
+                                                </div>
+                                            </div>
+
+                                            <!-- Giá và danh mục giá, loại phòng -->
+                                            <hr class="my-2">
+                                            <div class="row align-items-center">
+                                                <div class="col-md-4">
+                                                    <p><b>Giá: </b><span th:text="${post.roomPrice}"></span>Triệu
+                                                        đồng/tháng
+                                                    </p>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <p><b>Diện tích: </b><span th:text="${post.square}"></span>m2
+                                                    </p>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <p><b>Loại phòng: </b><span th:text="${post.priceCategory}"></span>
+                                                    </p>
+                                                </div>
+                                            </div>
+
+                                            <!-- Mô tả chi tiết -->
+                                            <hr class="my-2">
+                                            <div class="row">
+                                                <div class="mt-3">
+                                                    <p><b class="fs-5 text">Thông tin mô tả</b></p>
+                                                    <p th:utext="${post.content}"></p>
+                                                </div>
+                                            </div>
+                                            <!-- Tiện ích đi kèm -->
+                                            <hr class="my-2">
+                                            <div class="row">
+                                                <div class="mt-3">
+                                                    <p><b class="fs-5 text">Tiện ích</b></p>
+                                                    <p th:text="${post.wifi}"></p>
+                                                    <p th:text="${post.parking}"></p>
+                                                    <p th:text="${post.conditioner}"></p>
+                                                </div>
+                                            </div>
+
+                                            <!-- Vị trí trên bản đồ -->
+                                            <hr class="my-2">
+                                            <div class="row">
+                                                <div class="mt-3">
+                                                    <p><b class="fs-5 text">Vị trí trên đồ</b></p>
+                                                    <p class="blockquote">Lựa chọn chế độ xem phù hợp với bạn!</p>
+                                                    <!-- Chế độ xem -->
+                                                    <button id="drivingButton" class="btn btn-primary btn-lg">Lái
+                                                        xe</button>
+                                                    <button id="transitButton" class="btn btn-primary btn-lg">Phương
+                                                        tiện
+                                                        công
+                                                        cộng</button>
+                                                    <button id="walkingButton" class="btn btn-primary btn-lg">Đi
+                                                        bộ</button>
+                                                    <div id="map" style="height: 400px;"></div>
+                                                </div>
+                                            </div>
+
+                                            <!-- Nếu phòng trọ không còn -->
+
+
+                                            <!-- Action -->
+                                            <div class="row">
+                                                <!-- Xoá bài đăng -->
+                                                <div class="col-md-12">
+                                                    <!-- Xoá hoặc đăng lại -->
+                                                    <div>
+                                                        <div th:if="${post.isDeleted == true}">
+                                                            <form th:action="@{/landlord/landlord-manager-post}"
+                                                                th:method="post" role="form">
+                                                                <input type="hidden" name="action" value="repost">
+                                                                <input type="hidden" name="postId"
+                                                                    th:value="${postIdFromUrl}">
+                                                                <div class="text-center">
+                                                                    <button type="submit" class="btn btn-primary">Đăng
+                                                                        lại</button>
+                                                                </div>
+                                                            </form>
+                                                        </div>
+
+                                                        <div th:if="${post.isDeleted == false}">
+                                                            <form th:action="@{/landlord/landlord-manager-post}"
+                                                                th:method="post" role="form">
+                                                                <input type="hidden" name="action" value="delete">
+                                                                <input type="hidden" name="postId"
+                                                                    th:value="${postIdFromUrl}">
+                                                                <div class="text-center">
+                                                                    <button type="submit" class="btn btn-danger">Xoá bài
+                                                                        đăng</button>
+                                                                </div>
+                                                            </form>
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+
+                                            </div>
+                                            <!-- End: action -->
+
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- Tab 2: Chỉnh sửa bài đăng-->
+                                <div id="_dm-tabsRevProfile" class="tab-pane fade" role="tabpanel"
+                                    aria-labelledby="profile-tab">
+                                    <div class="content__boxed content__wrap row col-md-12 mb-2">
+                                    
+                                        <form class="row g-3 needs-validation" role="form"
+                                            th:action="@{/landlord/landlord-manager-post}" th:object="${updatePost}"
+                                            th:method="post" enctype="multipart/form-data">
+
+                                            <!-- Input title -->
+                                            <div class="col-md-12">
+                                                <label for="title" class="form-label"><b>Tiêu đề bài đăng</b></label>
+                                                <input type="text" class="form-control" name="title" id="title"
+                                                    th:field="*{title}">
+                                                <span class="lead" id="title-error" style="color: #003366;"></span>
+                                            </div>
+
+                                            <!-- Input địa chỉ -->
+                                            <div class="col-md-12">
+                                                <label for="address" class="form-label"><b>Địa chỉ</b></label>
+                                                <input type="text" class="form-control" name="address" id="address"
+                                                    th:field=*{address} th:value="*{address}" required>
+                                                <span class="lead" id="address-error" style="color: #003366;"></span>
+                                            </div>
+
+                                            <!-- Input: Loại phòng -->
+                                            <div class="col-md-6 mt-4">
+                                                <label for="price_category"><b>Loại phòng</b></label>
+                                                <select class="form-control" name="priceCategory" id="price_category"
+                                                    th:field="*{priceCategory}" required>
+                                                    <option value="Giá rẻ">Giá rẻ</option>
+                                                    <option value="Homestay">Homestay</option>
+                                                    <option value="Chung cư mini">Chung cư mini</option>
+                                                </select>
+                                            </div>
+
+                                            <!-- Input: khu vực -->
+                                            <hr class="my-2">
+                                            <div class="col-md-6 mt-4">
+                                                <label for="area"><b>Khu vực</b></label>
+                                                <select class="form-control" name="area" id="area" th:field="*{area}"
+                                                    required>
+                                                    <option value="Khác">Tuỳ chọn</option>
+                                                    <option value="Quận Ba Đình">Quận Ba Đình</option>
+                                                    <option value="Quận Bắc Từ Liêm">Quận Bắc Từ Liêm</option>
+                                                    <option value="Quận Cầu Giấy">Quận Cầu Giấy</option>
+                                                    <option value="Quận Đống Đa">Quận Đống Đa</option>
+                                                    <option value="Quận Hai Bà Trưng">Quận Hai Bà Trưng</option>
+                                                    <option value="Quận Hà Đông">Quận Hà Đông</option>
+                                                    <option value="Quận Hoàn Kiếm">Quận Hoàn Kiếm</option>
+                                                    <option value="Quận Hoàng Mai">Quận Hoàng Mai</option>
+                                                    <option value="Quận Nam Từ Liêm">Quận Nam Từ Liêm</option>
+                                                    <option value="Quận Thanh Xuân">Quận Thanh Xuân</option>
+                                                    <option value="Quận Tây Hồ">Quận Tây Hồ</option>
+                                                </select>
+                                                <!-- Gán nhãn -->
+                                                <input type="hidden" name="tag" id="tag" th:field="*{tag}">
+                                            </div>
+
+                                            <!-- Input: Giá phòng -->
+                                            <div class="col-md-6">
+                                                <label for="room_price" class="form-label"><b>Giá phòng (Triệu
+                                                        đồng)</b></label>
+                                                <input type="text" class="form-control" name="roomPrice" id="room_price"
+                                                    placeholder="Triệu đồng" th:field=*{roomPrice}>
+                                            </div>
+
+                                            <!-- Input: Diện tích -->
+                                            <div class="col-md-6">
+                                                <label for="square" class="form-label"><b>Diện tích (m2)</b></label>
+                                                <input type="text" class="form-control" name="square" id="square"
+                                                    placeholder="m2" th:field="*{square}">
+                                            </div>
+
+                                            <!-- Checkbox: Tiện ích -->
+                                            <label><b>Tiện ích</b></label><br>
+                                            <div class="col-md-6">
+                                                <input type="checkbox" id="wifiCheckbox" name="wifi" value="Wifi"
+                                                    th:field="*{wifi}">
+                                                <label for="wifiCheckbox">Wifi</label><br>
+
+                                                <input type="checkbox" id="parkingCheckbox" name="parking"
+                                                    value="Bãi đỗ xe" th:field="*{parking}">
+                                                <label for="parkingCheckbox">Bãi đỗ xe</label><br>
+                                            </div>
+
+                                            <div class="col-md-6">
+                                                <input type="checkbox" id="conditionerCheckbox" name="conditioner"
+                                                    value="Điều hoà" th:field="*{conditioner}">
+                                                <label for="conditionerCheckbox">Điều hoà</label><br>
+
+                                                <input type="checkbox" id="otherCheckbox">
+                                                <label for="otherCheckbox">Khác</label><br>
+                                            </div>
+
+                                            <!--Start: Text Editor -->
+                                            <label for="tinymce-text-editor"><b>Mô tả chi tiết</b></label>
+                                            <div class="col-md-12">
+                                                <div class="form-group mb-3">
+                                                    <textarea id="tinymce-text-editor" th:field="*{content}"
+                                                        style="width:100%; height:400px">Nội dung bài đăng</textarea>
+                                                    <script>
+                                                        tinymce.init({
+                                                            selector: '#tinymce-text-editor',
+                                                            plugins: 'link lists media code',
+                                                            toolbar: 'alignleft aligncenter alignright alignjustify | formatselect | bullist numlist | outdent indent | link code',
+                                                            toolbar_mode: 'floating',
+                                                            tinycomments_author: 'Brian Carey'
+                                                        });
+                                                    </script>
+                                                </div>
+                                            </div>
+                                            <!-- End: Text editor -->
+
+                                            <!-- Input Image Upload -->
+                                            <div class="col-md-6">
+                                                <label for="photoFile">Ảnh phòng trọ</label><br>
+                                                <input type="file" name="photoFile" id="photoFile"
+                                                    th:field="*{photoFile}" accept="image/png, image/jpeg" required>
+                                            </div>
+
+                                            <div th:if="${updatePost.photo != null}">
+                                                <img th:src="${updatePost.photo}" alt="Ảnh phòng trọ" width="300" height="200"/>
+                                            </div>
+
+                                            <div class="d-grid mt-4 form-group">
+                                                <input type="hidden" name="action" value="update">
+                                                <input type="hidden" name="postId" th:value="${postIdFromUrl}">
+                                                <button class="btn btn-primary btn-lg" type="submit">Cập nhật</button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                    </div>
+                </div>
+            </div>
+            <div th:replace="fragments :: footer"></div>
+        </section>
+        <!-- Start: Header -->
+        <div th:replace="fragments :: header"></div>
+
+        <!-- Thanh điều hướng -->
+        <nav id="mainnav-container" class="mainnav">
+            <div class="mainnav__inner">
+                <!-- Start: Nevigation -->
+                <div class="mainnav__top-content scrollable-content pb-5">
+                    <!--Start: Avatar -->
+                    <div class="mainnav__profile mt-3 d-flex3">
+                        <!-- Profile picture  -->
+                        <div class="mininav-toggle text-center py-2">
+                            <img class="mainnav__avatar img-md rounded-circle border" src="/img/profile-photos/1.png"
+                                alt="Profile Picture">
+                        </div>
+
+                        <div class="mininav-content collapse d-mn-max">
+                            <div class="d-grid">
+                                <!-- User name and position -->
+                                <button class="d-block btn shadow-none p-2" data-bs-toggle="collapse"
+                                    data-bs-target="#usernav" aria-expanded="false" aria-controls="usernav">
+                                    <span class="d-flex justify-content-center align-items-center">
+                                        <h6 class="mb-0 me-3">Tên tài khoản</h6>
+                                    </span>
+                                    <small class="text-muted">Tài khoản đăng bài</small>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- End: Avatar-->
+
+                    <!-- Start: Left Navigation Category -->
+                    <div class="mainnav__categoriy py-3">
+                        <h6 class="mainnav__caption mt-0 px-3 fw-bold">Tuỳ chọn</h6>
+                        <ul class="mainnav__menu nav flex-column">
+                            <!-- Category: 1 -->
+                            <li class="nav-item">
+                                <a th:href=@{/landlord/landlord-home} class="mininav-toggle nav-link collapse"><i
+                                        class="demo-pli-home fs-5 me-2"></i>
+                                    <span class="nav-label mininav-content ms-1">Trang chủ</span>
+                                </a>
+                            </li>
+                            <!-- Category 2:  -->
+                            <li class="nav-item has-sub">
+                                <a href="#" class="mininav-toggle nav-link collapse"><i
+                                        class="demo-pli-split-vertical-2 fs-5 me-2"></i>
+                                    <span class="nav-label ms-1">Thông tin cá nhân</span>
+                                </a>
+                                <!-- Forms submenu list -->
+                                <ul class="mininav-content nav collapse">
+                                    <li class="nav-item">
+                                        <a th:href=@{/landlord/landlord-info} class="nav-link">Chi tiết tài khoản</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a th:href=@{/landlord/landlord-edit-info} class="nav-link">Chỉnh sửa thông
+                                            tin</a>
+                                    </li>
+                                </ul>
+                                <!-- END : Forms submenu list -->
+                            </li>
+                            <!-- Category 3: Bài đăng-->
+                            <li class="nav-item has-sub">
+                                <a href="#" class="mininav-toggle nav-link collapse"><i
+                                        class="demo-pli-split-vertical-2 fs-5 me-2"></i>
+                                    <span class="nav-label ms-1">Bài đăng</span>
+                                </a>
+                                <!-- Layouts submenu list -->
+                                <ul class="mininav-content nav collapse">
+                                    <li class="nav-item">
+                                        <a th:href=@{/landlord/landlord-post} class="nav-link">Tạo bài đăng</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a th:href=@{/landlord/landlord-posted} class="nav-link">Bài viết đã
+                                            đăng</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a th:href=@{/landlord/landlord-deleted-post} class="nav-link">Bài đăng đã xoá</a>
+                                    </li>
+                                </ul>
+                            </li>
+
+                            <!-- Category 4: Lịch hẹn -->
+                            <li class="nav-item has-sub">
+                                <a href="#" class="mininav-toggle nav-link collapsed"><i
+                                        class="demo-pli-speech-bubble-5 fs-5 me-2"></i>
+                                    <span class="nav-label ms-1">Lịch hẹn</span>
+                                </a>
+
+                                <!-- Blog Apps submenu list -->
+                                <ul class="mininav-content nav collapse">
+                                    <li class="nav-item">
+                                        <a th:href=@{/landlord/landlord-date} class="nav-link">Lịch hẹn xem phòng</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a th:href=@{/landlord/landlord-queue} class="nav-link">Lịch hẹn chờ xác
+                                            nhận</a>
+                                    </li>
+                                </ul>
+                                <!-- END : Blog Apps submenu list -->
+
+                            </li>
+
+                            <!-- Category 5: Cài đặt -->
+                            <li class="nav-item">
+                                <a th:href=@{/widgets} class="nav-link mininav-toggle"><i
+                                        class="demo-pli-gear fs-5 me-2"></i>
+                                    <span class="nav-label mininav-content ms-1">Cài đặt</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                    <!-- End: Left Nevigation Category-->
+
+                    <!-- Bottom navigation menu -->
+                    <div class="mainnav__bottom-content border-top pb-2">
+                        <ul id="mainnav" class="mainnav__menu nav flex-column">
+                            <li class="nav-item has-sub">
+                                <a th:href=@{/logout} class="nav-link mininav-toggle collapsed" aria-expanded="false">
+                                    <i class="demo-pli-unlock fs-5 me-2"></i>
+                                    <span class="nav-label ms-1">Đăng xuất</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                    <!-- End - Bottom navigation menu -->
+                </div>
+            </div>
+        </nav>
+    </div>
+    <!-- End: Thanh điều hướng -->
+    <script th:src="@{/vendors/popperjs/popper.min.js}" defer></script>
+    <script th:src="@{/vendors/bootstrap/bootstrap.min.js}" defer></script>
+    <script th:src="@{/js/nifty.js}" defer></script>
+    <script th:src="@{/js/demo-purpose-only.js}" defer></script>
+    <script th:src="@{/js/validate-password.js}" defer> </script>
+    <script th:src="@{/js/search.js}" defer> </script>
+    <script th:src="@{/js/alert.js}" defer> </script>
+
+</body>
+
+</html>

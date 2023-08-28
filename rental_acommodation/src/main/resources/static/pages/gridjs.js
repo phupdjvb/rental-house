@@ -27,7 +27,6 @@ document.addEventListener( "DOMContentLoaded", () => {
     }).render( document.getElementById( "_dm-gridjsBasic" ));
 
 
-
     // Sorting
     // ----------------------------------------------
     new gridjs.Grid({

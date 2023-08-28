@@ -1,6 +1,7 @@
 package com.jvb_intern.rental_acommodation.entity;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -26,21 +27,32 @@ public class LandlordDating {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long datingId;
 
-    @Column(name = "dating_time")
-    private LocalDate datingTime;
+    @Column(name = "booking_date")
+    private LocalDate bookingDate;
+
+    @Column(name = "booking_time")
+    private LocalTime bookingTime;
+
+    @Column(name = "is_received")
+    private Boolean isReceived;
 
     @Column(name = "confirm_status")
     private Boolean confirmStatus;
 
-    @Column(name = "is_deleted")
-    private Boolean isDeleted;
+    @Column(name = "is_canceled_by_landlord")
+    private Boolean isCanceledByLandlord;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @Column(name = "is_canceled_by_tenant")
+    private Boolean isCanceledByTenant;
+
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "landlord_id")
     private Landlord landlord;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "tenant_id")
     private Tenant tenant;
 
+    @Column(name = "post_id")
+    private Long postId;
 }

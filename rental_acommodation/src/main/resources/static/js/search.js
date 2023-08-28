@@ -21,7 +21,22 @@ document.addEventListener("DOMContentLoaded", function () {
             if (isNaN(page) || parseInt(page) <= 0) {
                 page = 0; // Giá trị mặc định cho trang là 0 (trang đầu tiên)
             }
-            window.location.href = "/landlord/landlord-search?keyword=" + encodeURIComponent(keyword) + "&page=" + page;
+
+            var pathRedirect = "";
+            const currentPath = window.location.pathname;// dường dẫn hiện tai
+
+            if(currentPath.startsWith("/tenant/")) {
+                pathRedirect = "/tenant/tenant-search?keyword=";
+            } 
+
+            if(currentPath.startsWith("/landlord/")) {
+                pathRedirect = "/landlord/landlord-search?keyword=";
+            }
+
+            if(currentPath.startsWith("/admin?")) {
+                pathRedirect = "/admin/admin-search/keyword=";
+            }
+            window.location.href = pathRedirect + encodeURIComponent(keyword) + "&page=" + page;
         }
     }
 });

@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1">
+    <meta name="description"
+        content="Màn hình home người đăng bài">
+    <title>Trang chủ | Người tìm trọ</title>
+
+    <!-- Font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;700&family=Ubuntu:wght@400;500;700&display=swap"
+        rel="stylesheet">
+    <!-- CSS -->
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{/css/nifty.min.css}">
+    <link rel="stylesheet" th:href="@{/css/demo-purpose/demo-icons.min.css}">
+    <link rel="stylesheet" th:href="@{/css/demo-purpose/demo-settings.min.css}">
+</head>
+
+<body class="jumping">
+    <!-- PAGE CONTAINER -->
+    <div id="root" class="container-fluid root mn--max hd--expanded">
+        <!-- CONTENTS -->
+        <section id="content" class="content">
+            <div class="content__header content__boxed overlapping">
+                <div class="content__wrap">
+
+                    <!-- Breadcrumb -->
+                    <nav aria-label="breadcrumb">
+                        <ol class="breadcrumb mb-0">
+                            <li class="breadcrumb-item"><a th:href="@{/tenant/tenant-home}">Trang chủ</a></li>
+                        </ol>
+                    </nav>
+
+                    <!-- END : Breadcrumb -->
+                    <h6 class="page-title mt-2">Bài đăng mới</h6>
+                    <br>
+                </div>
+            </div>
+
+            <!-- Start: Content -->
+            <div class="content__boxed content__wrap row col-md-12 mb-2">
+                <div th:if = "${param.success}">
+                    <div class = "alert alert-info" id = "successAlert">Cập nhật thành công!</div>
+                </div>
+                <div class="card">
+                    <div class="card-body">
+                        <!-- Start: Form thông tin -->
+                        <form class="row g-3 needs-validation" th:object = "${tenantInfo}" th:action = "@{/tenant/tenant-edit-info}" method = "post" role = "form" id = "registrationForm" novalidate >
+                            <div class="col-md-4">
+                                <label for="name" class="form-label">Tên tài khoản</label>
+                                <input type="text" id = "name" name = "name" class="form-control" th:field = "*{name}">
+                            </div>
+                            <div class="col-md-6">
+                                <label for="phone" class="form-label">Số điện thoại</label>
+                                <input type="text" id = "phone" name = "phone" class="form-control" th:field = "*{phone}">
+                            </div>
+
+                            <div class="col-md-12">
+                                <label for="email" class="form-label">Email</label>
+                                <input type="text" id = "email" name = "email" class="form-control" th:value = "${tenantInfo.email}" readonly>
+                            </div>
+
+                            <div class="col-md-12">
+                                <label for="password" class="form-label">Mật khẩu</label>
+                                <input type="password" id = "password" name = "password" class="form-control" th:field = "*{password}">
+                                <span class = "lead" id = "title-error" style="color: #003366;"></span>
+                            </div>
+
+                            <div class="col-md-5">
+                                <label for="confirmPassword" class="form-label">Xác nhận mật khẩu</label>
+                                <input type="password" id = "confirmPassword" name = "confirmPassword" class="form-control" th:field = "*{confirmPassword}">
+                                <span class = "lead" id = "title-error" style="color: #003366;"></span>
+                            </div>
+
+                            <div class="col-12">
+                                <div class="form-check">
+                                    <input id="_dm-vCustomAgree" class="form-check-input" type="checkbox" required>
+                                    <label for="_dm-vCustomAgree" class="form-check-label">
+                                        Đồng ý với sự thay đổi này
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col-12 pt-4">
+                                <button class="btn btn-primary" type="submit">Xác nhận</button>
+                            </div>
+                        </form>
+                        <!-- End: Form thông tin -->
+                    </div>
+                </div>
+            </div>
+            <!-- End: Content -->
+
+            <!--------------------------- Footer ------------------------------------>
+            <div th:replace = "fragments :: footer"></div>
+            <!-- END - FOOTER -->
+        </section>
+         <!-- Start: Header -->
+        <div th:replace="fragments :: header"></div>
+
+        <!-- Thanh điều hướng -->
+        <nav id="mainnav-container" class="mainnav">
+            <div class="mainnav__inner">
+                <!-- Start: Nevigation -->
+                <div class="mainnav__top-content scrollable-content pb-5">
+                    <!--Start: Avatar -->
+                    <div class="mainnav__profile mt-3 d-flex3">
+                        <!-- Profile picture  -->
+                        <div class="mininav-toggle text-center py-2">
+                            <img class="mainnav__avatar img-md rounded-circle border"
+                                src="/img/profile-photos/1.png" alt="Profile Picture">
+                        </div>
+
+                        <div class="mininav-content collapse d-mn-max">
+                            <div class="d-grid">
+                                <!-- User name and position -->
+                                <button class="d-block btn shadow-none p-2" data-bs-toggle="collapse"
+                                    data-bs-target="#usernav" aria-expanded="false" aria-controls="usernav">
+                                    <span class="d-flex justify-content-center align-items-center">
+                                        <h6 class="mb-0 me-3">Tên tài khoản</h6>
+                                    </span>
+                                    <small class="text-muted">Tài khoản đăng bài</small>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- End: Avatar-->
+
+                    <!-- Start: Left Navigation Category -->
+                    <div class="mainnav__categoriy py-3 ">
+                        <h6 class="mainnav__caption mt-0 px-3 fw-bold">Tuỳ chọn</h6>
+                        <ul class="mainnav__menu nav flex-column">
+
+                            <!-- Category: 1 Trang chủ-->
+                            <li class="nav-item">
+                                <a th:href="@{/tenant/tenant-home}" class="mininav-toggle nav-link active"><i
+                                        class="demo-pli-home fs-5 me-2"></i>
+                                    <span class="nav-label mininav-content ms-1">Trang chủ</span>
+                                </a>
+                            </li>
+                            <!-- Category 2: Thông tin cá nhân -->
+                            <li class="nav-item has-sub">
+                                <a href="#" class="mininav-toggle nav-link collapse"><i
+                                        class="demo-pli-split-vertical-2 fs-5 me-2"></i>
+                                    <span class="nav-label ms-1">Thông tin cá nhân</span>
+                                </a>
+                                <!-- Forms submenu list -->
+                                <ul class="mininav-content nav collapse">
+                                    <li class="nav-item">
+                                        <a th:href="@{/teant/tenant-info}" class="nav-link ">Chi tiết tài khoản</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a th:href="@{/tenant/tenant-edit-info}" class="nav-link">Chỉnh sửa thông tin</a>
+                                    </li>
+                                </ul>
+                                <!-- END : Forms submenu list -->
+                            </li>
+
+                            <!-- Category 3: Lịch hẹn -->
+                            <li class="nav-item has-sub">
+                                <a href="#" class="mininav-toggle nav-link collapsed"><i
+                                        class="demo-pli-speech-bubble-5 fs-5 me-2"></i>
+                                    <span class="nav-label ms-1">Lịch hẹn </span>
+                                </a>
+
+                                <!-- Blog Apps submenu list -->
+                                <ul class="mininav-content nav collapse">
+                                    <li class="nav-item">
+                                        <a th:href="@{/tenant/tenant-date}" class="nav-link">Lịch hẹn xem phòng</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a th:href="@{/tenant/tenant-queue}" class="nav-link">Lịch hẹn chờ xác nhận</a>
+                                    </li>
+                                </ul>
+                                <!-- END : Blog Apps submenu list -->
+
+                            </li>
+                           
+                            <!-- Category 5: Cài đặt -->
+                            <li class="nav-item">
+                                <a href="#" class="nav-link mininav-toggle"><i
+                                        class="demo-pli-gear fs-5 me-2"></i>
+                                    <span class="nav-label mininav-content ms-1">Cài đặt</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                    <!-- End: Left Nevigation Category-->
+
+                    <!-- Bottom navigation menu -->
+                    <div class="mainnav__bottom-content border-top pb-2">
+                        <ul id="mainnav" class="mainnav__menu nav flex-column">
+                            <li class="nav-item has-sub">
+                                <a th:href="@{/logout}" class="nav-link mininav-toggle collapsed" aria-expanded="false">
+                                    <i class="demo-pli-unlock fs-5 me-2"></i>
+                                    <span class="nav-label ms-1">Đăng xuất</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                    <!-- End - Bottom navigation menu -->
+                </div>
+        </nav>
+    </div>
+
+    <!-- Button chuyên lên đầu trang -->
+     <div class="scroll-container">
+        <a href="#root" class="scroll-page rounded-circle ratio ratio-1x1" aria-label="Scroll button"></a>
+    </div>
+    <!-- End: Thanh điều hướng -->
+    <script th:src="@{/vendors/popperjs/popper.min.js}" defer></script>
+    <script th:src="@{/vendors/bootstrap/bootstrap.min.js}" defer></script>
+    <script th:src="@{/js/nifty.js}" defer></script>
+    <script th:src="@{/js/demo-purpose-only.js}" defer></script>
+    <script th:src="@{/js/search.js}" defer> </script>
+</body>
+</html>

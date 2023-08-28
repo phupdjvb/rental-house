@@ -72,6 +72,7 @@ public class LandlordController {
     public String saveChangeInfo(@ModelAttribute("landlordInfo") LandlordInfoDto landlordInfoDto) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+        
         String email = userDetails.getUsername();
         landlordHomeService.saveChangeInfo(email, landlordInfoDto);
         return "redirect:/landlord/landlord-edit-info?success";

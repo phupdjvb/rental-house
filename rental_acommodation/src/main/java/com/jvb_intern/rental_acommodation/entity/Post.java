@@ -40,7 +40,7 @@ public class Post {
     private LocalDateTime createdAt;
 
     @Column(name = "updated_at")
-    private LocalDate updatedAt;
+    private LocalDateTime updatedAt;
 
     @Column(name = "is_deleted")
     private Boolean isDeleted;
@@ -48,7 +48,7 @@ public class Post {
     @Column(name = "photo")
     private String photo;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "landlord_id")
     private Landlord landlord;
 

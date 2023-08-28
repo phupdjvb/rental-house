@@ -47,7 +47,7 @@
                 <div class="card">
                     <div class="card-body">
                         <!-- Start: Form thông tin -->
-                        <form class="row g-3 needs-validation" th:object = "${landlordInfo}" th:action = "@{/landlord/landlord-edit-info}" method = "post" role = "form" novalidate >
+                        <form class="row g-3 needs-validation" th:object = "${landlordInfo}" th:action = "@{/landlord/landlord-edit-info}" method = "post" role = "form" id = "registrationForm" novalidate >
                             <div class="col-md-4">
                                 <label for="name" class="form-label">Tên tài khoản</label>
                                 <input type="text" id = "name" name = "name" class="form-control" th:field = "*{name}">
@@ -168,8 +168,7 @@
                                             đăng</a>
                                     </li>
                                     <li class="nav-item">
-                                        <a th:href=@{/landlord/landlord-list-post} class="nav-link">Bài đăng mới
-                                            nhất</a>
+                                        <a th:href=@{/landlord/landlord-deleted-post} class="nav-link">Bài đăng đã xoá</a>
                                     </li>
                                 </ul>
                             </li>
@@ -230,5 +229,6 @@
     <script th:src="@{/js/validate-password.js}" defer> </script>
     <script th:src="@{/js/search.js}" defer> </script>
     <script th:src="@{/js/notification.js}" defer> </script>
+    <script th:src="@{/js/validate-password.js}" defer></script>
 </body>
 </html>

@@ -90,7 +90,7 @@
                             <!-- Searchbox toggler for small devices -->
                             <label for="header-search-input"
                                 class="header__btn d-md-none btn btn-icon rounded-pill shadow-none border-0 btn-sm"
-                                type="button">
+                                type="button" aria-placeholder="Nhập từ khoá cần tìm kiếm...">
                                 <i class="demo-psi-magnifi-glass"></i>
                             </label>
 
@@ -220,7 +220,7 @@
                                                 <i class="demo-pli-male fs-5 me-2"></i> Tài khoản
                                             </a>
 
-                                            <a href="#" class="list-group-item list-group-item-action">
+                                            <a th:href="@{/logout}" class="list-group-item list-group-item-action">
                                                 <i class="demo-pli-unlock fs-5 me-2"></i> Đăng xuất
                                             </a>
                                         </div>

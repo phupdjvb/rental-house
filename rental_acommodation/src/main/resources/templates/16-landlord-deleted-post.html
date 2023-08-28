@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1">
+    <meta name="description"
+        content="Màn hình home người đăng bài">
+    <title>Bài đăng đã xoá | Người cho thuê</title>
+
+    <!-- Font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;700&family=Ubuntu:wght@400;500;700&display=swap"
+        rel="stylesheet">
+    <!-- CSS -->
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{/css/nifty.min.css}">
+    <link rel="stylesheet" th:href="@{/css/demo-purpose/demo-icons.min.css}">
+    <link rel="stylesheet" th:href="@{/css/demo-purpose/demo-settings.min.css}">
+</head>
+
+<body class="jumping">
+    <!-- PAGE CONTAINER -->
+    <div id="root" class="container-fluid root mn--max hd--expanded">
+        <!-- CONTENTS -->
+        <section id="content" class="content">
+            <div class="content__header content__boxed overlapping">
+                <div class="content__wrap">
+
+                    <!-- Breadcrumb -->
+                    <nav aria-label="breadcrumb">
+                        <ol class="breadcrumb mb-0">
+                            <li class="breadcrumb-item"><a th:href="@{/landlord/landlord-home}">Trang chủ</a></li>
+                        </ol>
+                    </nav>
+                    <!-- END : Breadcrumb -->
+                    <h6 class="page-title mt-2">Bài đăng đã xoá</h6>
+                    <br>
+                </div>
+            </div>
+
+            <!-- Start: Content -->
+            <div class="content__boxed content__wrap row col-md-12 mb-2">
+                <!-- Thông báo -->
+                <div th:if="${listDeletedPost.isEmpty()}">
+                    <div class = "align-items-center">
+                        <p class="fs-1 text-bold text-center">Không có bài đăng nào!!</p>
+                    </div>
+                </div>
+
+                <!-- Danh sách bài đăng -->
+                <div th:each="deletedPost : ${listDeletedPost}" class="col-md-4 col-xl-4 mb-4">
+                    <div class="card h-100">
+                        <div class="card-body d-flex flex-column">
+                            <!-- Title -->
+                            <div class="card-title mb-3">
+                                <a th:text="${#strings.length(deletedPost.title) > 30 ? #strings.substring(deletedPost.title, 0, 30) + '...' : deletedPost.title}"
+                                    class="blockquote btn-link"
+                                    th:href="@{/landlord/landlord-manager-post/{postId}(postId = ${deletedPost.postId})}"></a>
+                            </div>
+
+                            <!-- Thông tin cơ bản -->
+                            <div class="d-flex flex-column">
+                                <div>
+                                    <!-- Image -->
+                                    <div class="box mt-2">
+                                        <div class="img-container"
+                                            style="max-width: 100%; height: 0; padding-bottom: 75%; position: relative;">
+                                            <img th:src="@{${deletedPost.photo}}" class="img-fluid"
+                                                style="position: absolute; object-fit: cover; width: 100%; height: 100%;">
+                                        </div>
+                                    </div>
+
+                                    <!-- Thông tin cơ bản về bài đăng -->
+                                    <div class="mt-3">
+                                        <p class="text-bold"><b>Giá phòng: </b><span
+                                                th:text="${deletedPost.getAccommodate().roomPrice}"></span>
+                                            (Triệu đồng)</p>
+                                        <p class="text-bold"><b>Khu vực: </b><span
+                                                th:text="${deletedPost.getAccommodate().area}"></span>
+                                        </p>
+                                        <p class="text-bold"><b>Loại phòng: </b><span
+                                                th:text="${deletedPost.getAccommodate().priceCategory}"></span>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- End: thông tin cơ bản -->
+                            <div class="mt-2 pt-3 border-top d-flex align-items-center">
+                                <a class="btn-link"
+                                    th:href="@{/landlord/landlord-manager-post/{postId}(postId = ${deletedPost.postId})}">Chi
+                                    tiết ></a>
+                                <small class="text-muted ms-auto"
+                                    th:text="${#temporals.format(deletedPost.createdAt, 'HH:mm | dd-MM-yyyy ')}"></small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- End: Content -->
+
+            <!-- Pagination -->
+            <div th:if ="${listDeletedPost.isEmpty()}">
+                <!-- Không hiển thị gì  -->
+            </div>
+
+            <div th:unless = "${listDeletedPost.isEmpty()}" >
+                <div class="d-flex justify-content-center align-items-center">
+                    <div class="pagination">
+                        <ul class="pagination">
+                            <li class="page-item" th:class="${listDeletedPost.hasPrevious() ? '' : 'disabled'}">
+                                <a class="page-link" th:if="${listDeletedPost.hasPrevious()}" th:href="@{/landlord/landlord-deleted-post(page=${listDeletedPost.number - 1})}"> << Trở lại</a>
+                                <span class="page-link" th:unless="${listDeletedPost.hasPrevious()}"><< Trở lại</span>
+                            </li>
+    
+                            <li class="page-item" th:class="${listDeletedPost.hasNext() ? '' : 'disabled'}">
+                                <a class="page-link" th:if="${listDeletedPost.hasNext()}" th:href="@{/landlord/landlord-deleted-post(page=${listDeletedPost.number + 1})}">Tiếp >></a>
+                                <span class="page-link" th:unless="${listDeletedPost.hasNext()}">Tiếp >></span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>       
+            </div>         
+            <!-- End: Pagination -->
+            <!--------------------------- Footer ------------------------------------>
+            <div th:replace = "fragments :: footer"></div>
+            <!-- END - FOOTER -->
+
+        </section>
+
+       <!-- Start: Header -->
+        <header class="header">
+            <div class="header__inner">
+                <!-- Brand -->
+                <div class="header__brand">
+                    <div class="brand-wrap">
+                        <!-- Logo -->
+                        <a th:href="@{/home}" class="brand-img stretched-link">
+                            <img th:src="@{/img/logo.svg}" alt="Nifty Logo" class="Nifty logo" width="40" height="40">
+                        </a>
+
+                        <!-- Brand  -->
+                        <div class="brand-title">Timtro247</div>
+                    </div>
+                </div>
+                <!-- End brand -->
+
+                <div class="header__content">
+                    <!-- Content Header - Left Side: -->
+                    <div class="header__content-start">
+                        <!-- Đóng mở điều hướng -->
+                        <button type="button" class="nav-toggler header__btn btn btn-icon btn-sm"
+                            aria-label="Nav Toggler">
+                            <i class="demo-psi-view-list"></i>
+                        </button>
+
+                        <!-- Thanh tìm kiếm -->
+                        <div class="header-searchbox">
+                            <!-- Searchbox toggler for small devices -->
+                            <label for="header-search-input"
+                                class="header__btn d-md-none btn btn-icon rounded-pill shadow-none border-0 btn-sm"
+                                type="button">
+                                <i class="demo-psi-magnifi-glass"></i>
+                            </label>
+
+                            <!-- Thanh tìm kiếm -->
+                            <form class="searchbox searchbox--auto-expand searchbox--hide-btn input-group"
+                            id="search-form">
+                            <input id="header-search-input" class="searchbox__input form-control bg-transparent"
+                                type="search" placeholder="Nhập từ khoá cần tìm kiếm . . ." aria-label="Tìm kiếm">
+                            <div class="searchbox__backdrop">
+                                <button
+                                    class="searchbox__btn header__btn btn btn-icon rounded shadow-none border-0 btn-sm"
+                                    type="button" id="button-addon2">
+                                    <i class="demo-pli-magnifi-glass"></i>
+                                </button>
+                            </div>
+                        </form>
+                        <!-- Thanh tìm kiếm -->
+                        </div>
+                    </div>
+                    <!-- End - Content Header - Left Side -->
+
+                    <!-- Content Header - Right Side: -->
+                    <div class="header__content-end">
+                        <!-- Thông báo -->
+                        <div class="dropdown">
+                            <!-- Toggler -->
+                            <button class="header__btn btn btn-icon btn-sm" type="button" data-bs-toggle="dropdown"
+                                aria-label="Notification dropdown" aria-expanded="false">
+                                <span class="d-block position-relative">
+                                    <i class="demo-psi-bell"></i>
+                                    <span class="badge badge-super rounded bg-danger p-1">
+
+                                        <span class="visually-hidden">unread messages</span>
+                                    </span>
+                                </span>
+                            </button>
+
+                            <!-- Thông báo -->
+                            <div class="dropdown-menu dropdown-menu-end w-md-300px">
+                                <div class="border-bottom px-3 py-2 mb-3">
+                                    <h5>Thông báo</h5>
+                                </div>
+
+                                <div class="list-group list-group-borderless">
+
+                                    <!-- Thông báo 1 -->
+                                    <div class="list-group-item list-group-item-action d-flex align-items-start mb-3">
+                                        <div class="flex-shrink-0 me-3">
+                                            <i class="demo-psi-speech-bubble-7 text-green-300 fs-2"></i>
+                                        </div>
+                                        <div class="flex-grow-1 ">
+                                            <div class="d-flex justify-content-between align-items-start">
+                                                <a href="#" class="h6 mb-0 stretched-link text-decoration-none">[Thông
+                                                    báo cho lịch hẹn đang chờ]</a>
+                                            </div>
+                                            <small class="text-muted">30 phút trước(Lấy thời gian tạo post trong cơ sở
+                                                dữ liệu) </small>
+                                        </div>
+                                    </div>
+
+                                    <!-- Thông báo 2 -->
+                                    <div class="list-group-item list-group-item-action d-flex align-items-start mb-3">
+                                        <div class="flex-shrink-0 me-3">
+                                            <img class="img-xs rounded-circle" src="/img/profile-photos/3.png"
+                                                alt="Profile Picture" loading="lazy">
+                                        </div>
+                                        <div class="flex-grow-1 ">
+                                            <a href="#" class="h6 d-block mb-0 stretched-link text-decoration-none">Lịch
+                                                hẹn thành công</a>
+                                            <small class="text-muted">1 hours ago</small>
+                                        </div>
+                                    </div>
+                                    <div class="text-center mb-2">
+                                        <a href="#" class="btn-link">Tất cả thông báo</a>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                        <!-- End - Notification dropdown -->
+
+                        <!-- Icon thông tin user -->
+                        <div class="dropdown">
+
+                            <!-- Toggler -->
+                            <button class="header__btn btn btn-icon btn-sm" type="button" data-bs-toggle="dropdown"
+                                aria-label="User dropdown" aria-expanded="false">
+                                <i class="demo-psi-male"></i>
+                            </button>
+
+                            <!-- User dropdown menu -->
+                            <div class="dropdown-menu dropdown-menu-end w-md-450px">
+
+                                <!-- User dropdown header -->
+                                <div class="d-flex align-items-center border-bottom px-3 py-2">
+                                    <div class="flex-shrink-0">
+                                        <img class="img-sm rounded-circle" src="/img/profile-photos/1.png"
+                                            alt="Profile Picture" loading="lazy">
+                                    </div>
+                                    <div class="flex-grow-1 ms-3">
+                                        <h5 class="mb-0">Render tên từ thymeleaf</h5>
+                                        <span class="text-muted fst-italic">Render email từ thymeleaf</span>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-7">
+                                        <!-- Thông tin tài khoản bản đơn giản-->
+                                        <div class="list-group list-group-borderless mb-3">
+                                            <div class="list-group-item text-center border-bottom mb-3">
+                                                <p class="h1 display-1 text-green">17</h6>
+                                                </p>
+                                                <p class="h6 mb-0"> Bài đăng trong tháng qua</p>
+                                            </div>
+                                        </div>
+
+                                    </div>
+
+                                    <div class="col-md-5">
+                                        <!-- User menu link -->
+                                        <div class="list-group list-group-borderless h-100 py-3">
+                                            <a href="#"
+                                                class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+                                                <span><i class="demo-pli-mail fs-5 me-2"></i> Thông báo</span>
+                                                <span class="badge bg-danger rounded-pill">14</span>
+                                            </a>
+                                            <a th:href="@{landlord/landlord-edit-info}" class="list-group-item list-group-item-action">
+                                                <i class="demo-pli-male fs-5 me-2"></i> Tài khoản
+                                            </a>
+
+                                            <a th:href="@{/logout}" class="list-group-item list-group-item-action">
+                                                <i class="demo-pli-unlock fs-5 me-2"></i> Đăng xuất
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                        <!-- End - User dropdown -->
+                    </div>
+                </div>
+            </div>
+        </header>
+        <!-- End: Header -->
+
+        <!-- Thanh điều hướng -->
+        <nav id="mainnav-container" class="mainnav">
+            <div class="mainnav__inner">
+                <!-- Start: Nevigation -->
+                <div class="mainnav__top-content scrollable-content pb-5">
+                    <!--Start: Avatar -->
+                    <div class="mainnav__profile mt-3 d-flex3">
+                        <!-- Profile picture  -->
+                        <div class="mininav-toggle text-center py-2">
+                            <img class="mainnav__avatar img-md rounded-circle border"
+                                src="/img/profile-photos/1.png" alt="Profile Picture">
+                        </div>
+
+                        <div class="mininav-content collapse d-mn-max">
+                            <div class="d-grid">
+                                <!-- User name and position -->
+                                <button class="d-block btn shadow-none p-2" data-bs-toggle="collapse"
+                                    data-bs-target="#usernav" aria-expanded="false" aria-controls="usernav">
+                                    <span class="d-flex justify-content-center align-items-center">
+                                        <h6 class="mb-0 me-3">Tên tài khoản</h6>
+                                    </span>
+                                    <small class="text-muted">Tài khoản đăng bài</small>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- End: Avatar-->
+
+                    <!-- Start: Left Navigation Category -->
+                    <div class="mainnav__categoriy py-3 ">
+                        <h6 class="mainnav__caption mt-0 px-3 fw-bold">Tuỳ chọn</h6>
+                        <ul class="mainnav__menu nav flex-column">
+                            <!-- Category: 1 -->
+                            <li class="nav-item">
+                                <a th:href="@{/landlord/landlord-home}" class="mininav-toggle nav-link collapse"><i
+                                        class="demo-pli-home fs-5 me-2"></i>
+                                    <span class="nav-label mininav-content ms-1">Trang chủ</span>
+                                </a>
+                            </li>
+                            <!-- Category 2:  -->
+                            <li class="nav-item has-sub">
+                                <a href="#" class="mininav-toggle nav-link collapse"><i
+                                        class="demo-pli-split-vertical-2 fs-5 me-2"></i>
+                                    <span class="nav-label ms-1">Thông tin cá nhân</span>
+                                </a>
+                                <!-- Forms submenu list -->
+                                <ul class="mininav-content nav collapse">
+                                    <li class="nav-item">
+                                        <a th:href="@{/landlord/landlord-info}" class="nav-link ">Chi tiết tài khoản</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a th:href="@{/landlord/landlord-edit-info}" class="nav-link">Chỉnh sửa thông tin</a>
+                                    </li>
+                                </ul>
+                                <!-- END : Forms submenu list -->
+                            </li>
+                            <!-- Category 3: Bài đăng-->
+                            <li class="nav-item has-sub">
+                                <a href="#" class="mininav-toggle nav-link active"><i
+                                        class="demo-pli-split-vertical-2 fs-5 me-2"></i>
+                                    <span class="nav-label ms-1">Bài đăng</span>
+                                </a>
+                                <!-- Layouts submenu list -->
+                                <ul class="mininav-content nav collapse">
+                                    <li class="nav-item">
+                                        <a th:href="@{/landlord/landlord-post}" class="nav-link">Tạo bài đăng</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a th:href="@{/landlord/landlord-posted}" class="nav-link">Bài viết đã đăng</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a th:href="@{/landlord/landlord-deleted-post}" class="nav-link active">Bài viết đã xoá</a>
+                                    </li>
+                                </ul>
+                            </li>
+
+                            <!-- Category 4: Lịch hẹn -->
+                            <li class="nav-item has-sub">
+                                <a href="#" class="mininav-toggle nav-link collapsed"><i
+                                        class="demo-pli-speech-bubble-5 fs-5 me-2"></i>
+                                    <span class="nav-label ms-1">Lịch hẹn </span>
+                                </a>
+
+                                <!-- Blog Apps submenu list -->
+                                <ul class="mininav-content nav collapse">
+                                    <li class="nav-item">
+                                        <a th:href="@{/landlord/landlord-date}" class="nav-link">Lịch hẹn xem phòng</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a th:href="@{/landlord/landlord-queue}" class="nav-link">Lịch hẹn chờ xác nhận</a>
+                                    </li>
+                                </ul>
+                                <!-- END : Blog Apps submenu list -->
+
+                            </li>
+                           
+                            <!-- Category 5: Cài đặt -->
+                            <li class="nav-item">
+                                <a href="#" class="nav-link mininav-toggle"><i
+                                        class="demo-pli-gear fs-5 me-2"></i>
+                                    <span class="nav-label mininav-content ms-1">Cài đặt</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                    <!-- End: Left Nevigation Category-->
+
+                    <!-- Bottom navigation menu -->
+                    <div class="mainnav__bottom-content border-top pb-2">
+                        <ul id="mainnav" class="mainnav__menu nav flex-column">
+                            <li class="nav-item has-sub">
+                                <a href="#" class="nav-link mininav-toggle collapsed" aria-expanded="false">
+                                    <i class="demo-pli-unlock fs-5 me-2"></i>
+                                    <span class="nav-label ms-1">Đăng xuất</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                    <!-- End - Bottom navigation menu -->
+                </div>
+        </nav>
+    </div>
+
+     <!-- Button chuyên lên đầu trang -->
+     <div class="scroll-container">
+        <a href="#root" class="scroll-page rounded-circle ratio ratio-1x1" aria-label="Scroll button"></a>
+    </div>
+    <!-- End button chuyên lên đầu trang -->
+
+    <!-- End: Thanh điều hướng -->
+    <script th:src="@{/vendors/popperjs/popper.min.js}" defer></script>
+    <script th:src="@{/vendors/bootstrap/bootstrap.min.js}" defer></script>
+    <script th:src="@{/js/nifty.js}" defer></script>
+    <script th:src="@{/js/demo-purpose-only.js}" defer></script>
+    <script th:src="@{/js/validate-password.js}" defer> </script>
+    <script th:src="@{/js/search.js}" defer> </script>
+</body>
+</html>

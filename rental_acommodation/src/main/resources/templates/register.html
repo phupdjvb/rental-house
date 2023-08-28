@@ -19,8 +19,9 @@
     <link href="/css/nifty.min.css" rel="stylesheet">
     <link href="/css/demo-purpose/demo-icons.min.css" rel="stylesheet">
     <link href="/css/demo-purpose/demo-settings.min.css" rel="stylesheet">
-</head>
+    <!-- <link href="/css/danger.css" rel="stylesheet"> -->
 
+</head>
 <body class="">
     <!-- Page container -->
     <div id="root" class="root front-container">
@@ -34,16 +35,16 @@
 
                             <!-- Notification-->
                             <div th:if="${param.success}">
-                                <div class="alert alert-info">Đăng ký tài khoản thành công!</div>
+                                <div class="alert alert-info" id = "success">Đăng ký tài khoản thành công!</div>
                             </div>
                             <div th:if="${param.fail}">
-                                <div class="alert alert-warning">Mật khẩu không trùng khớp!</div>
+                                <div class="alert alert-warning" id = "fail">Mật khẩu không trùng khớp!</div>
                             </div>
                             <div th:if="${param.existed}">
-                                <div class="alert alert-danger">Email này đã được đăng ký với vai trò khác!!</div>
+                                <div class="alert alert-danger" id = "existed">Email này đã được đăng ký với vai trò khác!!</div>
                             </div>
                             <div th:if="${param.existedRole}">
-                                <div class="alert alert-danger">Email đã tồn tại!!</div>
+                                <div class="alert alert-danger" id = "existedRole">Email đã tồn tại!!</div>
                             </div>
 
                             <!-- Form đăng ký -->
@@ -51,24 +52,24 @@
                                 <h1 class="h3">Đăng ký</h1>
                                 <p>Tạo tài khoản ngay để tham gia Timtro247</p>
                             </div>
-                            <form class="w-md-400px d-inline-flex row mb-2" method="post" role="form"
-                                th:action="@{/register/save}" th:object="${registration}">
+                            <form class="w-md-400px d-inline-flex row mb-2 needs-validation" method="post" role="form"
+                                th:action="@{/register/save}" th:object="${registration}" id="registrationForm">
                                 <div class="col-sm-12">
                                     <input class="form-control" id="name" name="name" placeholder="Tên đăng nhập"
-                                        th:field="*{name}" type="text" />
-                                    <p th:errors="*{name}" class="text-danger" th:if="${#fields.hasErrors('name')}">
+                                        th:field="*{name}" type="text" required/>
+                                    <!-- <p th:errors="*{name}" class="text-danger" th:if="${#fields.hasErrors('name')}"> -->
                                     </p>
                                 </div>
 
                                 <div class="col-sm-12 mt-4">
                                     <input class="form-control" id="phone" name="phone" placeholder="Số điện thoại"
-                                        th:field="*{phone}" type="text" />
-                                    <p th:errors="*{phone}" class="text-danger" th:if="${#fields.hasErrors('phone')}">
-                                    </p>
+                                        th:field="*{phone}" type="text" required/>
+                                    <!-- <p th:errors="*{phone}" class="text-danger" th:if="${#fields.hasErrors('phone')}"></p> -->
+                                    <p id="phoneError" class="text-danger"></p>
                                 </div>
 
                                 <div class="col-sm-12 mt-4">
-                                    <select class="form-control" id="role" name="role" th:field="*{role}">
+                                    <select class="form-control" id="role" name="role" th:field="*{role}" required>
                                         <option value="TENANT">Người tìm trọ</option>
                                         <option value="LANDLORD">Người cho thuê</option>
                                     </select>
@@ -76,25 +77,22 @@
 
                                 <div class="col-sm-12 mt-4">
                                     <input class="form-control" id="email" name="email" placeholder="Nhập email"
-                                        th:field="*{email}" type="email" />
-                                    <p th:errors="*{email}" class="text-danger" th:if="${#fields.hasErrors('email')}">
-                                    </p>
+                                        th:field="*{email}" type="email" required/>
+                                    <!-- <p th:errors="*{email}" class="text-danger" th:if="${#fields.hasErrors('email')}"></p> -->
+                                    <p id="emailError" class="text-danger"></p> <!-- This is the added element -->
                                 </div>
 
                                 <div class="col-sm-12 mt-4">
                                     <input class="form-control" id="password" name="password" placeholder="Mật khẩu"
-                                        th:field="*{password}" type="password" />
-                                    <p th:errors="*{password}" class="text-danger"
-                                        th:if="${#fields.hasErrors('password')}">
-                                    </p>
+                                        th:field="*{password}" type="password" required/>
+                                    <p id = "passwordComplexityError" class = "text-danger"></p>
                                 </div>
 
                                 <div class="col-sm-12 mt-4">
                                     <input class="form-control" id="confirmPassword" name="confirmPassword"
-                                        placeholder="Xác nhận mật khẩu" th:field="*{confirmPassword}" type="password" />
-                                    <p th:errors="*{confirmPassword}" class="text-danger"
-                                        th:if="${#fields.hasErrors('confirmPassword')}">
-                                    </p>
+                                        placeholder="Xác nhận mật khẩu" th:field="*{confirmPassword}" type="password" required/>
+                                    <p id="passwordMatchError" class="text-danger"></p> <!-- This is the added element -->
+                                   
                                 </div>
 
                                 <!-- Check box đồng ý với điều khoản -->
@@ -105,6 +103,7 @@
                                             class="btn-link text-decoration-underline">điều khoản của chúng tôi</a>
                                     </label>
                                 </div>
+
                                 <div class="d-grid mt-5">
                                     <button class="btn btn-primary btn-lg" type="submit">Đăng ký</button>
                                 </div>
@@ -196,11 +195,11 @@
             <!-- End - Collection Of Images -->
         </div>
     </div>
-    <script src="/vendors/popperjs/popper.min.js" defer></script>
-    <script src="/vendors/bootstrap/bootstrap.min.js" defer></script>
-    <script src="/js/nifty.js" defer></script>
-    <script src="/js/demo-purpose-only.js" defer></script>
-
+    <script th:src="@{/vendors/popperjs/popper.min.js}" defer></script>
+    <script th:src="@{/vendors/bootstrap/bootstrap.min.js}" defer></script>
+    <script th:src="@{/js/nifty.js}" defer></script>
+    <script th:src="@{/js/demo-purpose-only.js}" defer></script>
+    <script th:src="@{/js/form-validate.js}" defer></script>
+    <script th:src="@{/js/alert.js}" defer></script>
 </body>
-
 </html>

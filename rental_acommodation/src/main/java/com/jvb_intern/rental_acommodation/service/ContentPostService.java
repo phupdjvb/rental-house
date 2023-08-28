@@ -7,4 +7,6 @@ public interface ContentPostService {
     Post savePostAndAccommodate(ContentPostDto newPostDto, String landlordEmail);
 
     Post savePost(ContentPostDto newPostDto, String landlordEmail);
+
+    Post updatePost(ContentPostDto updatePost, String landlordEmail, Long postId);
 }

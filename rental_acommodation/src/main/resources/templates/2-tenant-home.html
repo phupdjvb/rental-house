@@ -31,7 +31,7 @@
                     <!-- Breadcrumb -->
                     <nav aria-label="breadcrumb">
                         <ol class="breadcrumb mb-0">
-                            <li class="breadcrumb-item"><a th:href="@{/landlord/landlord-home}">Trang chủ</a></li>
+                            <li class="breadcrumb-item"><a th:href="@{/tenant/tenant-home}">Trang chủ</a></li>
                         </ol>
                     </nav>
 
@@ -44,13 +44,14 @@
             <!-- Start: Content -->
             <div class="content__boxed content__wrap row col-md-12 mb-2">
                 <!-- Danh sách bài đăng -->
-                <div th:each = "post : ${listPost}" class="col-md-4 col-xl-4 mb-4">
+                <div th:each = "post : ${listPost}" class="col-md-4 col-xl-4 mb-4" th:if = "${post.isDeleted == false}">
                     <div class="card h-100" th:fragment = "post-card(post)">
                         <div class="card-body d-flex flex-column">
+                            
                             <!-- Title -->
                             <div class="card-title mb-3">
                                 <a th:text="${#strings.length(post.title) > 30 ? #strings.substring(post.title, 0, 30) + '...' : post.title}"
-                                    class="blockquote btn-link" th:href="@{/landlord/landlord-post-detail(postId = ${post.postId})}"></a>
+                                    class="blockquote btn-link" th:href="@{/tenant/tenant-post-detail(postId = ${post.postId})}"></a>
                             </div> 
 
                              <!-- Thông tin cơ bản -->
@@ -71,9 +72,10 @@
                                     </div>
                                 </div>
                             </div>
+                            
                              <!-- End: thông tin cơ bản -->
                              <div class="mt-2 pt-3 border-top d-flex align-items-center">
-                                <a class="btn-link" th:href="@{/landlord/landlord-post-detail(postId = ${post.postId})}">Chi tiết ></a>
+                                <a class="btn-link" th:href="@{/tenant/tenant-post-detail(postId = ${post.postId})}">Chi tiết ></a>
                                 <small class="text-muted ms-auto" th:text="${#temporals.format(post.createdAt, 'HH:mm | dd-MM-yyyy ')}"></small>
                             </div>
                         </div>
@@ -87,12 +89,12 @@
                     <div class="pagination">
                         <ul class="pagination">
                             <li class="page-item" th:class="${listPost.hasPrevious() ? '' : 'disabled'}">
-                                <a class="page-link" th:if="${listPost.hasPrevious()}" th:href="@{/landlord/landlord-home(page=${listPost.number - 1})}"> << Trở lại</a>
+                                <a class="page-link" th:if="${listPost.hasPrevious()}" th:href="@{/tenant/tenant-home(page=${listPost.number - 1})}"> << Trở lại</a>
                                 <span class="page-link" th:unless="${listPost.hasPrevious()}"><< Trở lại</span>
                             </li>
 
                             <li class="page-item" th:class="${listPost.hasNext() ? '' : 'disabled'}">
-                                <a class="page-link" th:if="${listPost.hasNext()}" th:href="@{/landlord/landlord-home(page=${listPost.number + 1})}">Tiếp >></a>
+                                <a class="page-link" th:if="${listPost.hasNext()}" th:href="@{/tenant/tenant-home(page=${listPost.number + 1})}">Tiếp >></a>
                                 <span class="page-link" th:unless="${listPost.hasNext()}">Tiếp >></span>
                             </li>
                         </ul>
@@ -177,7 +179,7 @@
                                 <!-- Blog Apps submenu list -->
                                 <ul class="mininav-content nav collapse">
                                     <li class="nav-item">
-                                        <a th:href="@{/teant/tenant-date}" class="nav-link">Lịch hẹn xem phòng</a>
+                                        <a th:href="@{/tenant/tenant-date}" class="nav-link">Lịch hẹn xem phòng</a>
                                     </li>
                                     <li class="nav-item">
                                         <a th:href="@{/tenant/tenant-queue}" class="nav-link">Lịch hẹn chờ xác nhận</a>

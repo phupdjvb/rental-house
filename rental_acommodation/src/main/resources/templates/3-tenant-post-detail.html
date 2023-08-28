@@ -136,85 +136,142 @@
             <div class="content__boxed content__wrap row col-md-12 mb-2">
                 <!-- card 1 -->
                 <div class="card col-md-12">
-                    <div class="card-body" th:object="${displayPostDto}">
-                        <!-- Ảnh và thông tin liên hệ -->
-                        <div class="row">
-                            <!-- Ảnh -->
-                            <div class="col-md-9">
-                                <div class="img-container mt-2"
-                                    style="max-width: 100%; height: 0; padding-bottom: 75%; position: relative;">
-                                    <img th:src="${displayPostDto.photo}" class="img-fluid"
-                                        style="position: absolute; object-fit: cover; width: 100%; height: 100%;">
+                    <div class="card-body" th:object="${displayPostDto}" >
+
+                         <!-- Nếu bài viết bị xoá -->
+                        <div th:if = "${displayPostDto.isDeleted == true}">
+                            <div class="text-center">
+                                <p class="lead">Bài viết đã bị xoá</p>
+                            </div>
+        
+                            <!-- Action buttons -->
+                            <div class="d-flex justify-content-center gap-3 mt-4">
+                                <button type="button" onclick="window.history.back()" class="btn btn-light">Trở lại</button>
+                                <a th:href="@{/index}" class="btn btn-primary">Trang chủ</a>
+                            </div>
+                        </div>
+
+                        <!-- Nếu chưa xoá -->
+                        <div th:unless = "${displayPostDto.isDeleted == true}">
+                            <!-- Ảnh và thông tin liên hệ -->
+                            <div class="row">
+                                <!-- Ảnh -->
+                                <div class="col-md-9">
+                                    <div class="img-container mt-2"
+                                        style="max-width: 100%; height: 0; padding-bottom: 75%; position: relative;">
+                                        <img th:src="${displayPostDto.photo}" class="img-fluid"
+                                            style="position: absolute; object-fit: cover; width: 100%; height: 100%;">
+                                    </div>
+                                </div>
+                                
+                                <!-- Thông tin liên hệ -->
+                                <div class="col-md-3">
+                                    <p><b class="fs-5 text">Thông tin liên hệ</b></p>
+                                    <p id="hidden-info-name" class="text-primary"><b th:text="${displayPostDto.name}"></b>
+                                    </p>
+                                    <p id="hidden-info-email" class="hidden"><b>Email: </b><span
+                                            th:text="${displayPostDto.email}"></span></p>
+                                    <p id="hidden-info-phone" class="hidden"><b>SĐT: </b><span
+                                            th:text="${displayPostDto.phone}"></span></p>
                                 </div>
                             </div>
 
-                            <!-- Thông tin liên hệ -->
-                            <div class="col-md-3">
-                                <p><b class="fs-5 text">Thông tin liên hệ</b></p>
-                                <p id="hidden-info-name" class="text-primary"><b th:text="${displayPostDto.name}"></b>
-                                </p>
-                                <p id="hidden-info-email" class="hidden"><b>Email: </b><span
-                                        th:text="${displayPostDto.email}"></span></p>
-                                <p id="hidden-info-phone" class="hidden"><b>SĐT: </b><span
-                                        th:text="${displayPostDto.phone}"></span></p>
+                            <!-- Tittle -->
+                            <hr class="my-2"> <!-- Gạch ngăn ngang -->
+                            <div class="row">
+                                <div>
+                                    <p class="fs-2 text" th:text="*{title}"></p>
+                                    <p><b class="text-primary">Địa chỉ: </b><span class="text-primary"
+                                            th:text="${displayPostDto.address}"></span></p>
+                                </div>
                             </div>
-                        </div>
 
-                        <!-- Tittle -->
-                        <hr class="my-2"> <!-- Gạch ngăn ngang -->
-                        <div class="row">
-                            <div>
-                                <p class="fs-2 text" th:text="*{title}"></p>
-                                <p><b class="text-primary">Địa chỉ: </b><span class="text-primary"
-                                        th:text="${displayPostDto.address}"></span></p>
+                            <!-- Giá và danh mục giá, loại phòng -->
+                            <hr class="my-2">
+                            <div class="row align-items-center">
+                                <div class="col-md-4">
+                                    <p><b>Giá: </b><span th:text="${displayPostDto.roomPrice}"></span>Triệu đồng/tháng</p>
+                                </div>
+                                <div class="col-md-4">
+                                    <p><b>Diện tích: </b><span th:text="${displayPostDto.square}"></span>m2 </p>
+                                </div>
+                                <div class="col-md-4">
+                                    <p><b>Loại phòng: </b><span th:text="${displayPostDto.priceCategory}"></span></p>
+                                </div>
                             </div>
-                        </div>
 
-                        <!-- Giá và danh mục giá, loại phòng -->
-                        <hr class="my-2">
-                        <div class="row align-items-center">
-                            <div class="col-md-4">
-                                <p><b>Giá: </b><span th:text="${displayPostDto.roomPrice}"></span>Triệu đồng/tháng</p>
+                            <!-- Mô tả chi tiết -->
+                            <hr class="my-2">
+                            <div class="row">
+                                <div class="mt-3">
+                                    <p><b class="fs-5 text">Thông tin mô tả</b></p>
+                                    <p th:utext="${displayPostDto.content}"></p>
+                                </div>
                             </div>
-                            <div class="col-md-4">
-                                <p><b>Diện tích: </b><span th:text="${displayPostDto.square}"></span>m2 </p>
+                            <!-- Tiện ích đi kèm -->
+                            <hr class="my-2">
+                            <div class="row">
+                                <div class="mt-3">
+                                    <p><b class="fs-5 text">Tiện ích</b></p>
+                                    <p th:text="${displayPostDto.wifi}"></p>
+                                    <p th:text="${displayPostDto.parking}"></p>
+                                    <p th:text="${displayPostDto.conditioner}"></p>
+                                </div>
                             </div>
-                            <div class="col-md-4">
-                                <p><b>Loại phòng: </b><span th:text="${displayPostDto.priceCategory}"></span></p>
-                            </div>
-                        </div>
 
-                        <!-- Mô tả chi tiết -->
-                        <hr class="my-2">
-                        <div class="row">
-                            <div class="mt-3">
-                                <p><b class="fs-5 text">Thông tin mô tả</b></p>
-                                <p th:utext="${displayPostDto.content}"></p>
-                            </div>
-                        </div>
-                        <!-- Tiện ích đi kèm -->
-                        <hr class="my-2">
-                        <div class="row">
-                            <div class="mt-3">
-                                <p><b class="fs-5 text">Tiện ích</b></p>
-                                <p th:text="${displayPostDto.wifi}"></p>
-                                <p th:text="${displayPostDto.parking}"></p>
-                                <p th:text="${displayPostDto.conditioner}"></p>
-                            </div>
-                        </div>
+                            <!-- Vị trí trên bản đồ -->
+                            <hr class="my-2">
+                            <div class="row">
+                                <div class="mt-3">
+                                    <p><b class="fs-5 text">Vị trí trên đồ</b></p>
+                                    <p class="blockquote">Lựa chọn chế độ xem phù hợp với bạn!</p>
+                                    <!-- Chế độ xem -->
+                                    <button id="drivingButton" class="btn btn-primary btn-lg">Lái xe</button>
+                                    <button id="transitButton" class="btn btn-primary btn-lg">Phương tiện công cộng</button>
+                                    <button id="walkingButton" class="btn btn-primary btn-lg">Đi bộ</button>
+                                    <div id="map" style="height: 400px;"></div>
 
-                        <!-- Vị trí trên bản đồ -->
-                        <hr class="my-2">
-                        <div class="row">
-                            <div class="mt-3">
-                                <p><b class="fs-5 text">Vị trí trên đồ</b></p>
-                                <p class="blockquote">Lựa chọn chế độ xem phù hợp với bạn!</p>
-                                <!-- Chế độ xem -->
-                                <button id="drivingButton" class="btn btn-primary btn-lg">Lái xe</button>
-                                <button id="transitButton" class="btn btn-primary btn-lg">Phương tiện công cộng</button>
-                                <button id="walkingButton" class="btn btn-primary btn-lg">Đi bộ</button>
-                                <div id="map" style="height: 400px;"></div>
+                                </div>
+                            </div>
 
+                            <!-- Đặt lịch -->
+                            <hr class = "my-2">
+                            <!-- Nếu phòng trọ không còn nữa -->
+                            <div th:if = "${displayPostDto.roomStatus == false}">
+                                <p class = "text-warning fs-4 text">Rất tiếc, phòng này hiện không còn nữa! Vui lòng liên hệ với chủ trọ để biết thêm thông tin chi tiết</p>
+                                <div class="col-md-3">
+                                    <p><b class="fs-5 text">Thông tin liên hệ: </b></p>
+                                    <p class="text-primary"><b th:text="${displayPostDto.name}"></b>
+                                    </p>
+                                    <p class="hidden"><b>Email: </b><span
+                                            th:text="${displayPostDto.email}"></span></p>
+                                    <p class="hidden"><b>SĐT: </b><span
+                                            th:text="${displayPostDto.phone}"></span></p>
+                                </div>
+                            </div>
+
+                            <div class = "align-items-center" th:unless = "${displayPostDto.roomStatus == false}">
+                                <button id="booking-button" class="btn btn-warning btn-lg">Đặt lịch ngay</button>
+                            </div>
+                            
+                            <!-- Tạo lịch hẹn -->
+                            <div id="booking-form" style="display: none;">
+                                <!-- Form tạo lịch hẹn -->
+                                <form th:action="@{/tenant/tenant-post-detail}" role = "form" th:object = "${datingDto}" method = "post">
+                                    <!-- Ngày hẹn -->
+                                    <label for="bookingDate">Ngày hẹn:</label>
+                                    <input type="date" id="bookingDate" name="bookingDate" class = "form-control" th:field="*{bookingDate}" required>
+
+                                    <!-- Giờ hẹn -->
+                                    <label for="bookingTime">Giờ hẹn:</label>
+                                    <input type="time" id="bookingTime" name="bookingTime" class = "form-control" th:field="*{bookingTime}" required>
+                                    <button type = "submit" class="btn btn-danger btn-lg">Đặt lịch</button>
+                                </form>
+
+                                <!-- Lỗi không hợp lệ -->
+                                <div id="invalid-date-time" class="alert alert-danger" style="display: none;">
+                                    <p>Ngày giờ hẹn không hợp lệ! Vui lòng lựa chọn lại!</p>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -267,6 +324,7 @@
                                     <span class="nav-label mininav-content ms-1">Trang chủ</span>
                                 </a>
                             </li>
+                            
                             <!-- Category 2:  -->
                             <li class="nav-item has-sub">
                                 <a href="#" class="mininav-toggle nav-link collapse"><i
@@ -306,7 +364,6 @@
                                 <!-- END : Blog Apps submenu list -->
 
                             </li>
-
                             <!-- Category 5: Cài đặt -->
                             <li class="nav-item">
                                 <a th:href=@{/widgets} class="nav-link mininav-toggle"><i
@@ -317,7 +374,7 @@
                         </ul>
                     </div>
                     <!-- End: Left Nevigation Category-->
-                    
+
                     <!-- Bottom navigation menu -->
                     <div class="mainnav__bottom-content border-top pb-2">
                         <ul id="mainnav" class="mainnav__menu nav flex-column">
@@ -341,8 +398,8 @@
     <script th:src="@{/js/demo-purpose-only.js}" defer></script>
     <script th:src="@{/js/validate-password.js}" defer> </script>
     <script th:src="@{/js/search.js}" defer> </script>
-    <script th:src="@{/js/notification.js}" defer> </script>
-
+    <script th:src="@{/js/alert.js}" defer> </script>
+    <script th:src="@{/js/booking-button.js}" defer> </script>
+    <script th:src="@{/js/validate-booking-date.js}" defer> </script>
 </body>
-
 </html>
